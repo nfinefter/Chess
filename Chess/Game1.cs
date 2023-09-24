@@ -15,19 +15,12 @@ namespace Chess
     {
         ChessBoard,
         ChessPieces,
-        WKing,
-        WQueen,
-        WBishop,
-        WKnight,
-        WRook,
-        WPawn,
-        BKing,
-        BQueen,
-        BBishop,
-        BKnight,
-        BRook,
-        BPawn,
-
+        King,
+        Queen,
+        Bishop,
+        Knight,
+        Rook,
+        Pawn
     }
     public class Game1 : Game
     {
