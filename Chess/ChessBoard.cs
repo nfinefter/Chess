@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 using System;
 using System.Collections.Generic;
@@ -8,14 +9,10 @@ using System.Threading.Tasks;
 
 namespace Chess
 {
-    public sealed class ChessBoard : GameObject
-    {
-        public override Vector2 Origin => throw new NotImplementedException();
-       
-        public override Rectangle? SourceRectangle => throw new NotImplementedException();
-       
-        public ChessBoard(Rectangle pos, Color color, float rotation)
-            : base(pos, color, rotation)
+    public sealed class ChessBoard : Sprite
+    {  
+        public ChessBoard(Texture2D tex, Rectangle pos, Color color, float rotation, Vector2 origin)
+            : base(tex, pos, color, rotation, origin)
         {
 
         }
