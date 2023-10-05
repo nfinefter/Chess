@@ -9,11 +9,27 @@ using System.Threading.Tasks;
 
 namespace Chess
 {
-    public abstract class ChessPiece : Sprite
+    public abstract class ChessPiece
     {
-        public ChessPiece(Texture2D tex, Rectangle pos, Color color, float rotation, Vector2 origin)
-            : base(tex, pos, color, rotation, origin)
+        public enum PieceType
         {
+            Queen,
+            King,
+            Rook,
+            Bishop,
+            Knight,
+            Pawn
         }
+
+        public Point BoardPos;
+        public bool IsBlack;
+        public PieceType Type;
+        public ChessPiece(Point boardPos, PieceType pieceType, bool isBlack)
+        {
+            Type = pieceType;
+            BoardPos = boardPos;
+            IsBlack = isBlack;
+        }
+
     }
 }

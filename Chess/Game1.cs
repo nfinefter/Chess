@@ -27,7 +27,7 @@ namespace Chess
         private GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
 
-        GameScreen Game;
+        public static GameScreen Game;
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -47,7 +47,7 @@ namespace Chess
             ScreenManager.Instance.currentScreen = Screenum.Game;
 
             Game.ChessBoardTex = Content.Load<Texture2D>("chessBoard");
-            Game.ChessPiecesTex = Content.Load<Texture2D>("chessPieces");
+            GameScreen.ChessPiecesTex = Content.Load<Texture2D>("chessPieces");
 
             graphics.PreferredBackBufferWidth = Game.ChessBoardTex.Width / 2;
             graphics.PreferredBackBufferHeight = Game.ChessBoardTex.Height / 2;
@@ -57,7 +57,7 @@ namespace Chess
             GameDimensions = new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
 
             ContentManager<Textures>.Instance[Textures.ChessBoard] = Game.ChessBoardTex;
-            ContentManager<Textures>.Instance[Textures.ChessPieces] = Game.ChessPiecesTex;
+            ContentManager<Textures>.Instance[Textures.ChessPieces] = GameScreen.ChessPiecesTex;
 
             Game.Begin();
             base.Initialize();

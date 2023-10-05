@@ -11,38 +11,37 @@ namespace Chess
 {
     public sealed class Knight : ChessPiece
     {
-        public Knight(Texture2D tex, Rectangle pos, Color color, float rotation, Vector2 origin) : base(tex, pos, color, rotation, origin)
+        public Knight(Point pos, PieceType pieceType, bool isBlack) : base(pos, pieceType, isBlack)
         {
         }
     }
     public sealed class Rook : ChessPiece
     {
-        public Rook(Texture2D tex, Rectangle pos, Color color, float rotation, Vector2 origin) : base(tex, pos, color, rotation, origin)
+        public Rook(Point pos, PieceType pieceType, bool isBlack) : base(pos, pieceType, isBlack)
         {
         }
     }
     public sealed class King : ChessPiece
     {
-        public King(Texture2D tex, Rectangle pos, Color color, float rotation, Vector2 origin) : base(tex, pos, color, rotation, origin)
+        public King(Point pos, PieceType pieceType, bool isBlack) : base(pos, pieceType, isBlack)
         {
         }
     }
     public sealed class Queen : ChessPiece
     {
-        public Queen(Texture2D tex, Rectangle pos, Color color, float rotation, Vector2 origin) : base(tex, pos, color, rotation, origin)
+        public Queen(Point pos, PieceType pieceType, bool isBlack) : base(pos, pieceType, isBlack)
         {
         }
     }
     public sealed class Bishop : ChessPiece
     {
-        public Bishop(Texture2D tex, Rectangle pos, Color color, float rotation, Vector2 origin) : base(tex, pos, color, rotation, origin)
+        public Bishop(Point pos, PieceType pieceType, bool isBlack) : base(pos, pieceType, isBlack)
         {
         }
     }
-
     public sealed class Pawn : ChessPiece
     {
-        public Pawn(Texture2D tex, Rectangle pos, Color color, float rotation, Vector2 origin) : base(tex, pos, color, rotation, origin)
+        public Pawn(Point pos, PieceType pieceType, bool isBlack) : base(pos, pieceType, isBlack)
         {
         }
     }
