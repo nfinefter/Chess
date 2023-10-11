@@ -44,6 +44,18 @@ namespace Chess
             [Textures.Bishop] = new Rectangle(247, 7, 46, 46),
             [Textures.Pawn] = new Rectangle(315, 69, 33, 43),
         };
+
+        public static Dictionary<ChessPiece.PieceType, (Textures, Rectangle)> PieceToSprite = new Dictionary<ChessPiece.PieceType, (Textures, Rectangle)>()
+        {
+            [ChessPiece.PieceType.Pawn] = (Textures.Pawn, new Rectangle(315, 69, 33, 43)),
+            [ChessPiece.PieceType.King] = (Textures.King, new Rectangle(67, 7, 47, 47)),
+            [ChessPiece.PieceType.Queen] = (Textures.Queen, new Rectangle(4, 6, 52, 48)),
+            [ChessPiece.PieceType.Rook] = (Textures.Rook, new Rectangle(132, 10, 38, 42)),
+            [ChessPiece.PieceType.Knight] = (Textures.Knight, new Rectangle(188, 8, 45, 44)),
+            [ChessPiece.PieceType.Bishop] = (Textures.Bishop, new Rectangle(247, 7, 46, 46)),
+
+        };
+
         public void Load(string fen)
         {
             int x = 0;

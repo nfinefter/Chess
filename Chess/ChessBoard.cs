@@ -24,6 +24,8 @@ namespace Chess
         }
         public override void Draw(SpriteBatch spriteBatch)
         {
+
+            base.Draw(spriteBatch);
             for (int i = 0; i < 8; i++)
             {
                 for (int j = 0; j < 8; j++)
@@ -31,12 +33,13 @@ namespace Chess
                     if (Grid[i, j] != null)
                     {
                         Vector2 ScreenPos = Grid[i, j].BoardPos.ToVector2();
-                        spriteBatch.Draw(GameScreen.ChessPiecesTex, new Vector2(50 + (ScreenPos.X*75), (ScreenPos.Y*75)), Grid[i, j].IsBlack ? Color.Black : Color.White);
+                        spriteBatch.Draw(GameScreen.ChessPiecesTex, new Vector2(50 + (ScreenPos.X * 75), (ScreenPos.Y * 75)), GameScreen.PieceToSprite[Grid[i, j].Type].Item2, Grid[i, j].IsBlack ? Color.Black : Color.White);
+                        //spriteBatch.Draw(GameScreen.ChessPiecesTex, new Vector2(50 + (ScreenPos.X*75), (ScreenPos.Y*75)), Grid[i, j].IsBlack ? Color.Black : Color.White);
                     }
                 }
             }
 
-            base.Draw(spriteBatch);
+            
         }
 
     }
