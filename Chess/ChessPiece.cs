@@ -31,5 +31,7 @@ namespace Chess
             IsBlack = isBlack;
         }
 
+        public abstract List<Point> Move(ChessPiece[,] Grid);
+
     }
 }

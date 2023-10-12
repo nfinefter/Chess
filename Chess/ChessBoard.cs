@@ -11,6 +11,11 @@ namespace Chess
 {
     public sealed class ChessBoard : Sprite
     {
+
+        public bool WhiteTurn = true;
+        public ChessPiece SelectedPiece= null;
+
+
         public ChessPiece[,] Grid = new ChessPiece[8,8];
         public ChessBoard(Texture2D tex, Rectangle pos, Color color, float rotation, Vector2 origin)
             : base(tex, pos, color, rotation, origin)
@@ -32,8 +37,8 @@ namespace Chess
                 {
                     if (Grid[i, j] != null)
                     {
-                        Vector2 ScreenPos = Grid[i, j].BoardPos.ToVector2();
-                        spriteBatch.Draw(GameScreen.ChessPiecesTex, new Vector2(50 + (ScreenPos.X * 75), (ScreenPos.Y * 75)), GameScreen.PieceToSprite[Grid[i, j].Type].Item2, Grid[i, j].IsBlack ? Color.Black : Color.White);
+                        Point ScreenPos = Grid[i, j].BoardPos;
+                        spriteBatch.Draw(GameScreen.ChessPiecesTex, new Rectangle(50 + ScreenPos.X * 75, ScreenPos.Y * 75, 50, 50), GameScreen.PieceToSprite[Grid[i, j].Type].Item2, Grid[i, j].IsBlack ? Color.Black : Color.White);
                         //spriteBatch.Draw(GameScreen.ChessPiecesTex, new Vector2(50 + (ScreenPos.X*75), (ScreenPos.Y*75)), Grid[i, j].IsBlack ? Color.Black : Color.White);
                     }
                 }

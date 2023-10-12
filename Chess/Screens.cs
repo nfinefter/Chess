@@ -37,22 +37,22 @@ namespace Chess
 
         public Dictionary<Textures, Rectangle> sprites = new Dictionary<Textures, Rectangle>()
         {
-            [Textures.Queen] = new Rectangle(4, 6, 52, 48),
-            [Textures.King] = new Rectangle(67, 7, 47, 47),
-            [Textures.Rook] = new Rectangle(132, 10, 38, 42),
-            [Textures.Knight] = new Rectangle(188, 8, 45, 44),
-            [Textures.Bishop] = new Rectangle(247, 7, 46, 46),
-            [Textures.Pawn] = new Rectangle(315, 69, 33, 43),
+            [Textures.Queen] = new Rectangle(4, 70, 52, 48),
+            [Textures.King] = new Rectangle(67, 70, 47, 47),
+            [Textures.Rook] = new Rectangle(132, 70, 38, 42),
+            [Textures.Knight] = new Rectangle(188, 70, 45, 44),
+            [Textures.Bishop] = new Rectangle(247, 70, 46, 46),
+            [Textures.Pawn] = new Rectangle(315, 70, 33, 43),
         };
 
         public static Dictionary<ChessPiece.PieceType, (Textures, Rectangle)> PieceToSprite = new Dictionary<ChessPiece.PieceType, (Textures, Rectangle)>()
         {
-            [ChessPiece.PieceType.Pawn] = (Textures.Pawn, new Rectangle(315, 69, 33, 43)),
-            [ChessPiece.PieceType.King] = (Textures.King, new Rectangle(67, 7, 47, 47)),
-            [ChessPiece.PieceType.Queen] = (Textures.Queen, new Rectangle(4, 6, 52, 48)),
-            [ChessPiece.PieceType.Rook] = (Textures.Rook, new Rectangle(132, 10, 38, 42)),
-            [ChessPiece.PieceType.Knight] = (Textures.Knight, new Rectangle(188, 8, 45, 44)),
-            [ChessPiece.PieceType.Bishop] = (Textures.Bishop, new Rectangle(247, 7, 46, 46)),
+            [ChessPiece.PieceType.Pawn] = (Textures.Pawn, new Rectangle(315, 70, 33, 43)),
+            [ChessPiece.PieceType.King] = (Textures.King, new Rectangle(67, 70, 47, 47)),
+            [ChessPiece.PieceType.Queen] = (Textures.Queen, new Rectangle(4, 70, 52, 48)),
+            [ChessPiece.PieceType.Rook] = (Textures.Rook, new Rectangle(132, 70, 38, 42)),
+            [ChessPiece.PieceType.Knight] = (Textures.Knight, new Rectangle(188, 70, 45, 44)),
+            [ChessPiece.PieceType.Bishop] = (Textures.Bishop, new Rectangle(247, 70, 46, 46)),
 
         };
 
@@ -154,13 +154,16 @@ namespace Chess
 
      
         public override void Begin()
-        { 
+        {
             chessBoard = new ChessBoard(ChessBoardTex, Game1.GameDimensions, Color.White, 0, Vector2.Zero);
+            Load("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
+     
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Begin();
+
             chessBoard.Draw(spriteBatch);
 
             spriteBatch.DrawRectangle(new Rectangle(50, 0, 75, 75), Color.Red, 1, 0);
@@ -171,7 +174,7 @@ namespace Chess
 
         public override Screenum Update(GameTime gameTime)
         {
-            Load("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
+            
             return Screenum.Game;
         }
     }
