@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 using MonoGame.Extended;
 
@@ -174,7 +175,14 @@ namespace Chess
 
         public override Screenum Update(GameTime gameTime)
         {
+            MouseState mouseState = Mouse.GetState();
+
+            if (mouseState.LeftButton == ButtonState.Pressed)
+            {
+                Point pos = new Point(mouseState.Position.X / 75, mouseState.Position.Y / 75);
+            }
             
+
             return Screenum.Game;
         }
     }

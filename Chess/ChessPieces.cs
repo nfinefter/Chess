@@ -24,7 +24,7 @@ namespace Chess
     }
     public sealed class Rook : ChessPiece
     {
-        public bool HasMoved;
+        public bool HasMoved = false;
         public Rook(Point pos, PieceType pieceType, bool isBlack) : base(pos, pieceType, isBlack)
         {
         }
@@ -35,8 +35,8 @@ namespace Chess
         }
     }
     public sealed class King : ChessPiece
-    {
-        public bool HasMoved;
+    { 
+        public bool HasMoved = false;
         public King(Point pos, PieceType pieceType, bool isBlack) : base(pos, pieceType, isBlack)
         {
         }
@@ -71,7 +71,7 @@ namespace Chess
     }
     public sealed class Pawn : ChessPiece
     {
-        public bool HasMoved;
+        public bool HasMoved = false;
         public Pawn(Point pos, PieceType pieceType, bool isBlack) : base(pos, pieceType, isBlack)
         {
         }
@@ -83,6 +83,20 @@ namespace Chess
             {
                 for (int j = 0; j < 8; j++)
                 {
+                    if (!HasMoved)
+                    {
+                        if (Grid[BoardPos.X, BoardPos.Y + 2] == null && IsBlack)
+                        {
+                            PossibleMoves.Add(new Point(BoardPos.X, BoardPos.Y + 2));
+                        }
+                        else if (Grid[BoardPos.X, BoardPos.Y - 2] == null && !IsBlack)
+                        {
+                            PossibleMoves.Add(new Point(BoardPos.X, BoardPos.Y - 2));
+                        }
+                        HasMoved = true;
+                    }
+
+
                     if (Grid[BoardPos.X, BoardPos.Y + 1] == null && IsBlack)
                     {
                         PossibleMoves.Add(new Point(BoardPos.X, BoardPos.Y + 1));
