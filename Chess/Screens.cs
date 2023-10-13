@@ -180,6 +180,7 @@ namespace Chess
             if (mouseState.LeftButton == ButtonState.Pressed)
             {
                 Point pos = new Point(mouseState.Position.X / 75, mouseState.Position.Y / 75);
+                chessBoard.SelectedPiece = chessBoard.Grid[pos.X, pos.Y];
             }
             
 

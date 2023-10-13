@@ -105,6 +105,22 @@ namespace Chess
                     {
                         PossibleMoves.Add(new Point(BoardPos.X, BoardPos.Y - 1));
                     }
+                    else if (Grid[BoardPos.X - 1, BoardPos.Y - 1] == null && !IsBlack)
+                    {
+                        PossibleMoves.Add(new Point(BoardPos.X - 1, BoardPos.Y - 1));
+                    }
+                    else if (Grid[BoardPos.X + 1, BoardPos.Y - 1] == null && !IsBlack)
+                    {
+                        PossibleMoves.Add(new Point(BoardPos.X + 1, BoardPos.Y - 1));
+                    }
+                    else if (Grid[BoardPos.X - 1, BoardPos.Y + 1] == null && IsBlack)
+                    {
+                        PossibleMoves.Add(new Point(BoardPos.X - 1, BoardPos.Y + 1));
+                    }
+                    else if (Grid[BoardPos.X + 1, BoardPos.Y + 1] == null && IsBlack)
+                    {
+                        PossibleMoves.Add(new Point(BoardPos.X + 1, BoardPos.Y + 1));
+                    }
                 }
             }
             return PossibleMoves;
