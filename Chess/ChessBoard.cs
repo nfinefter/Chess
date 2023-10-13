@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
+using MonoGame.Extended;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -40,6 +42,10 @@ namespace Chess
                         //spriteBatch.Draw(GameScreen.ChessPiecesTex, new Vector2(50 + (ScreenPos.X*75), (ScreenPos.Y*75)), Grid[i, j].IsBlack ? Color.Black : Color.White);
                     }
                 }
+            }
+            if (SelectedPiece != null)
+            {
+                spriteBatch.DrawRectangle(new Rectangle(50 + (75*SelectedPiece.BoardPos.X), 75*SelectedPiece.BoardPos.Y, 75, 75), Color.Red, 1, 0);
             }
 
             
