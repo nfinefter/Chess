@@ -167,7 +167,7 @@ namespace Chess
 
             chessBoard.Draw(spriteBatch);
 
-            spriteBatch.DrawRectangle(new Rectangle(200, 150, 75, 75), Color.Red, 1, 0);
+            //spriteBatch.DrawRectangle(new Rectangle(200, 150, 75, 75), Color.Red, 1, 0);
 
 
             spriteBatch.End();
@@ -182,11 +182,13 @@ namespace Chess
                 Point pos = new Point(mouseState.Position.X / 75, mouseState.Position.Y / 75);
                 if (pos.X < 8 && pos.Y < 8)
                 {
-                    chessBoard.SelectedPiece = chessBoard.Grid[pos.X, pos.Y];
+                    chessBoard.SelectedPiece = chessBoard.Grid[pos.X, pos.Y]; 
                 }
             }
-            
-
+            if (chessBoard.SelectedPiece != null)
+            {
+                chessBoard.SelectedPiece.Move(chessBoard.Grid);
+            }
             return Screenum.Game;
         }
     }
