@@ -31,11 +31,13 @@ namespace Chess
     }
     public class GameScreen : Screen
     {
-
+        const int size = 73;
+        public ChessPiece SelectedPiece = null;
         public Texture2D ChessBoardTex;
         public static Texture2D ChessPiecesTex;
         public ChessBoard chessBoard;
-
+        public List<Point> PossibleMoves;
+        MouseState prevState;
         public Dictionary<Textures, Rectangle> sprites = new Dictionary<Textures, Rectangle>()
         {
             [Textures.Queen] = new Rectangle(4, 70, 52, 48),
@@ -167,7 +169,17 @@ namespace Chess
 
             chessBoard.Draw(spriteBatch);
 
-            //spriteBatch.DrawRectangle(new Rectangle(200, 150, 75, 75), Color.Red, 1, 0);
+            if (SelectedPiece != null)
+            {
+                spriteBatch.DrawRectangle(new Rectangle(50 + SelectedPiece.BoardPos.X * size, size * SelectedPiece.BoardPos.Y, 75, 75), Color.Red, 1, 0);
+            }
+            if (PossibleMoves != null)
+            {
+                for (int i = 0; i < PossibleMoves.Count; i++)
+                {
+                    spriteBatch.DrawRectangle(new Rectangle(50 + PossibleMoves[i].X * size, size * PossibleMoves[i].Y, 75, 75), Color.Lime, 1, 0);
+                }
+            }
 
 
             spriteBatch.End();
@@ -175,20 +187,56 @@ namespace Chess
 
         public override Screenum Update(GameTime gameTime)
         {
-            MouseState mouseState = Mouse.GetState();
+            MouseState currState = Mouse.GetState();
 
-            if (mouseState.LeftButton == ButtonState.Pressed)
+            if (currState.LeftButton == ButtonState.Pressed && prevState.LeftButton == ButtonState.Released)
             {
-                Point pos = new Point(mouseState.Position.X / 75, mouseState.Position.Y / 75);
+                Point pos = new Point((currState.Position.X-50) / size, currState.Position.Y / size);
                 if (pos.X < 8 && pos.Y < 8)
                 {
-                    chessBoard.SelectedPiece = chessBoard.Grid[pos.X, pos.Y]; 
+                    if (PossibleMoves != null)
+                    {
+                        if (PossibleMoves.Contains(new Point(pos.X, pos.Y)))
+                        {
+                            chessBoard.Grid[SelectedPiece.BoardPos.X, SelectedPiece.BoardPos.Y] = null;
+                            SelectedPiece.BoardPos = new Point(pos.X, pos.Y);
+                            chessBoard.Grid[pos.X, pos.Y] = SelectedPiece;
+
+                            if (chessBoard.Grid[pos.X, pos.Y].GetType() == typeof(Pawn))
+                            {
+                                var pawn = (Pawn)chessBoard.Grid[pos.X, pos.Y];
+                                pawn.HasMoved = true;
+                            }
+
+                            PossibleMoves.Clear();
+                        }
+                        else
+                        {
+                            SelectedPiece = null;
+                        }
+                    }
+
+                    if (SelectedPiece != null && SelectedPiece == chessBoard.Grid[pos.X, pos.Y])
+                    {
+                        SelectedPiece = null;
+                        PossibleMoves.Clear();
+                    }
+                    else
+                    {
+                        SelectedPiece = chessBoard.Grid[pos.X, pos.Y];
+                    }
                 }
             }
-            if (chessBoard.SelectedPiece != null)
+            
+            
+
+            if (SelectedPiece != null)
             {
-                chessBoard.SelectedPiece.Move(chessBoard.Grid);
+                PossibleMoves = SelectedPiece.Move(chessBoard.Grid);
             }
+
+            prevState = currState;
+
             return Screenum.Game;
         }
     }

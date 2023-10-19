@@ -14,7 +14,7 @@ namespace Chess
     {
         public Knight(Point pos, PieceType pieceType, bool isBlack) : base(pos, pieceType, isBlack)
         {
-    
+
         }
 
         public override List<Point> Move(ChessPiece[,] Grid)
@@ -35,7 +35,7 @@ namespace Chess
         }
     }
     public sealed class King : ChessPiece
-    { 
+    {
         public bool HasMoved = false;
         public King(Point pos, PieceType pieceType, bool isBlack) : base(pos, pieceType, isBlack)
         {
@@ -66,7 +66,7 @@ namespace Chess
 
         public override List<Point> Move(ChessPiece[,] Grid)
         {
-            throw new NotImplementedException();
+            
         }
     }
     public sealed class Pawn : ChessPiece
@@ -78,51 +78,48 @@ namespace Chess
 
         public override List<Point> Move(ChessPiece[,] Grid)
         {
-            List<Point> PossibleMoves = new List<Point>();
-            for (int i = 0; i < 8; i++)
+
+            if (!HasMoved)
             {
-                for (int j = 0; j < 8; j++)
+                if (BoardPos.Y + 2 < Grid.GetLength(0) && Grid[BoardPos.X, BoardPos.Y + 1] == null && Grid[BoardPos.X, BoardPos.Y + 2] == null && IsBlack)
                 {
-                    if (!HasMoved)
-                    {
-                        if (Grid[BoardPos.X, BoardPos.Y + 2] == null && IsBlack)
-                        {
-                            PossibleMoves.Add(new Point(BoardPos.X, BoardPos.Y + 2));
-                        }
-                        else if (Grid[BoardPos.X, BoardPos.Y - 2] == null && !IsBlack)
-                        {
-                            PossibleMoves.Add(new Point(BoardPos.X, BoardPos.Y - 2));
-                        }
-                        HasMoved = true;
-                    }
-
-
-                    if (Grid[BoardPos.X, BoardPos.Y + 1] == null && IsBlack)
-                    {
-                        PossibleMoves.Add(new Point(BoardPos.X, BoardPos.Y + 1));
-                    }
-                    else if (Grid[BoardPos.X, BoardPos.Y - 1] == null && !IsBlack)
-                    {
-                        PossibleMoves.Add(new Point(BoardPos.X, BoardPos.Y - 1));
-                    }
-                    else if (Grid[BoardPos.X - 1, BoardPos.Y - 1] == null && !IsBlack)
-                    {
-                        PossibleMoves.Add(new Point(BoardPos.X - 1, BoardPos.Y - 1));
-                    }
-                    else if (Grid[BoardPos.X + 1, BoardPos.Y - 1] == null && !IsBlack)
-                    {
-                        PossibleMoves.Add(new Point(BoardPos.X + 1, BoardPos.Y - 1));
-                    }
-                    else if (Grid[BoardPos.X - 1, BoardPos.Y + 1] == null && IsBlack)
-                    {
-                        PossibleMoves.Add(new Point(BoardPos.X - 1, BoardPos.Y + 1));
-                    }
-                    else if (Grid[BoardPos.X + 1, BoardPos.Y + 1] == null && IsBlack)
-                    {
-                        PossibleMoves.Add(new Point(BoardPos.X + 1, BoardPos.Y + 1));
-                    }
+                    PossibleMoves.Add(new Point(BoardPos.X, BoardPos.Y + 2));
+                }
+                if (BoardPos.Y - 2 >= 0 && Grid[BoardPos.X, BoardPos.Y - 1] == null && Grid[BoardPos.X, BoardPos.Y - 2] == null && !IsBlack)
+                {
+                    PossibleMoves.Add(new Point(BoardPos.X, BoardPos.Y - 2));
                 }
             }
+            
+
+            if (BoardPos.Y + 1 < Grid.GetLength(0) && Grid[BoardPos.X, BoardPos.Y + 1] == null && IsBlack)
+            {
+                PossibleMoves.Add(new Point(BoardPos.X, BoardPos.Y + 1));
+            }
+            if (BoardPos.Y - 1 >= 0 && Grid[BoardPos.X, BoardPos.Y - 1] == null && !IsBlack)
+            {
+                PossibleMoves.Add(new Point(BoardPos.X, BoardPos.Y - 1));
+            }
+
+            if (BoardPos.X - 1 >= 0 && BoardPos.Y - 1 >= 0 && Grid[BoardPos.X - 1, BoardPos.Y - 1] != null && !IsBlack && Grid[BoardPos.X -1, BoardPos.Y - 1].IsBlack != IsBlack)
+            {
+                PossibleMoves.Add(new Point(BoardPos.X - 1, BoardPos.Y - 1));
+            }
+            if (BoardPos.X + 1 < Grid.GetLength(0) && BoardPos.Y - 1 >= 0 && Grid[BoardPos.X + 1, BoardPos.Y - 1] != null && !IsBlack && Grid[BoardPos.X + 1, BoardPos.Y - 1].IsBlack != IsBlack)
+            {
+                PossibleMoves.Add(new Point(BoardPos.X + 1, BoardPos.Y - 1));
+            }
+
+            if (BoardPos.X - 1 >= 0 && BoardPos.Y + 1 < Grid.GetLength(0) && Grid[BoardPos.X - 1, BoardPos.Y + 1] != null && IsBlack && Grid[BoardPos.X - 1, BoardPos.Y + 1].IsBlack != IsBlack)
+            {
+                PossibleMoves.Add(new Point(BoardPos.X - 1, BoardPos.Y + 1));
+            }
+            if (BoardPos.X + 1 < Grid.GetLength(0) && BoardPos.Y + 1 < Grid.GetLength(0) && Grid[BoardPos.X + 1, BoardPos.Y + 1] != null && IsBlack && Grid[BoardPos.X + 1, BoardPos.Y + 1].IsBlack != IsBlack)
+            {
+                PossibleMoves.Add(new Point(BoardPos.X + 1, BoardPos.Y + 1));
+            }
+
+
             return PossibleMoves;
         }
     }

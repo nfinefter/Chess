@@ -14,7 +14,6 @@ namespace Chess
     public sealed class ChessBoard : Sprite
     {
         public bool WhiteTurn = true;
-        public ChessPiece SelectedPiece = null;
 
         public ChessPiece[,] Grid = new ChessPiece[8,8];
         public ChessBoard(Texture2D tex, Rectangle pos, Color color, float rotation, Vector2 origin)
@@ -43,10 +42,7 @@ namespace Chess
                     }
                 }
             }
-            if (SelectedPiece != null)
-            {
-                spriteBatch.DrawRectangle(new Rectangle(50 + (75*SelectedPiece.BoardPos.X), 75*SelectedPiece.BoardPos.Y, 75, 75), Color.Red, 1, 0);
-            }
+            
 
             
         }

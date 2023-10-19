@@ -20,7 +20,7 @@ namespace Chess
             Knight,
             Pawn
         }
-
+        public List<Point> PossibleMoves = new List<Point>();
         public Point BoardPos;
         public bool IsBlack;
         public PieceType Type;
