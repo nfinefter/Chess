@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
+using Newtonsoft.Json;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,7 +21,7 @@ namespace Chess
 
         public override List<Point> Move(ChessPiece[,] Grid)
         {
-            throw new NotImplementedException();
+            return PossibleMoves;
         }
     }
     public sealed class Rook : ChessPiece
@@ -31,7 +33,85 @@ namespace Chess
 
         public override List<Point> Move(ChessPiece[,] Grid)
         {
-            throw new NotImplementedException();
+            for (int i = 1; i < Grid.GetLength(0); i++)
+            {
+
+                if (BoardPos.Y + i < Grid.GetLength(0))
+                {
+                    PossibleMoves.Add(new Point(BoardPos.X, BoardPos.Y + i));
+
+                    if (Grid[BoardPos.X, BoardPos.Y + i] != null)
+                    {
+                        if (Grid[BoardPos.X, BoardPos.Y + i].IsBlack == IsBlack)
+                        {
+                            PossibleMoves.Remove(new Point(BoardPos.X, BoardPos.Y + i));
+                        }
+                        break;
+                    }
+
+                }
+
+            }
+            for (int i = 1; i < Grid.GetLength(0); i++)
+            {
+
+                if (BoardPos.X + i < Grid.GetLength(0))
+                {
+                    PossibleMoves.Add(new Point(BoardPos.X + i, BoardPos.Y));
+
+                    if (Grid[BoardPos.X + i, BoardPos.Y] != null)
+                    {
+                        if (Grid[BoardPos.X + i, BoardPos.Y].IsBlack == IsBlack)
+                        {
+                            PossibleMoves.Remove(new Point(BoardPos.X + i, BoardPos.Y));
+                        }
+                        break;
+                    }
+
+                }
+
+            }
+            for (int i = 1; i < Grid.GetLength(0); i++)
+            {
+
+                if (BoardPos.Y - i >= 0)
+                {
+                    PossibleMoves.Add(new Point(BoardPos.X, BoardPos.Y - i));
+
+                    if (Grid[BoardPos.X, BoardPos.Y - i] != null)
+                    {
+                        if (Grid[BoardPos.X, BoardPos.Y - i].IsBlack == IsBlack)
+                        {
+                            PossibleMoves.Remove(new Point(BoardPos.X, BoardPos.Y - i));
+                        }
+                        break;
+                    }
+
+                }
+
+            }
+            for (int i = 1; i < Grid.GetLength(0); i++)
+            {
+
+                if (BoardPos.X - i >= 0)
+                {
+                    PossibleMoves.Add(new Point(BoardPos.X - i, BoardPos.Y));
+
+                    if (Grid[BoardPos.X - i, BoardPos.Y] != null)
+                    {
+                        if (Grid[BoardPos.X - i, BoardPos.Y].IsBlack == IsBlack)
+                        {
+                            PossibleMoves.Remove(new Point(BoardPos.X - i, BoardPos.Y));
+                        }
+                        break;
+                    }
+
+                }
+
+            }
+
+
+            return PossibleMoves;
         }
     }
     public sealed class King : ChessPiece
@@ -43,7 +123,7 @@ namespace Chess
 
         public override List<Point> Move(ChessPiece[,] Grid)
         {
-            throw new NotImplementedException();
+            return PossibleMoves;
         }
     }
     public sealed class Queen : ChessPiece
@@ -55,7 +135,151 @@ namespace Chess
 
         public override List<Point> Move(ChessPiece[,] Grid)
         {
-            throw new NotImplementedException();
+            for (int i = 1; i < Grid.GetLength(0); i++)
+            {
+
+                if (BoardPos.Y + i < Grid.GetLength(0))
+                {
+                    PossibleMoves.Add(new Point(BoardPos.X, BoardPos.Y + i));
+
+                    if (Grid[BoardPos.X, BoardPos.Y + i] != null)
+                    {
+                        if (Grid[BoardPos.X, BoardPos.Y + i].IsBlack == IsBlack)
+                        {
+                            PossibleMoves.Remove(new Point(BoardPos.X, BoardPos.Y + i));
+                        }
+                        break;
+                    }
+
+                }
+
+            }
+            for (int i = 1; i < Grid.GetLength(0); i++)
+            {
+
+                if (BoardPos.X + i < Grid.GetLength(0))
+                {
+                    PossibleMoves.Add(new Point(BoardPos.X + i, BoardPos.Y));
+
+                    if (Grid[BoardPos.X + i, BoardPos.Y] != null)
+                    {
+                        if (Grid[BoardPos.X + i, BoardPos.Y].IsBlack == IsBlack)
+                        {
+                            PossibleMoves.Remove(new Point(BoardPos.X + i, BoardPos.Y));
+                        }
+                        break;
+                    }
+
+                }
+
+            }
+            for (int i = 1; i < Grid.GetLength(0); i++)
+            {
+
+                if (BoardPos.Y - i >= 0)
+                {
+                    PossibleMoves.Add(new Point(BoardPos.X, BoardPos.Y - i));
+
+                    if (Grid[BoardPos.X, BoardPos.Y - i] != null)
+                    {
+                        if (Grid[BoardPos.X, BoardPos.Y - i].IsBlack == IsBlack)
+                        {
+                            PossibleMoves.Remove(new Point(BoardPos.X, BoardPos.Y - i));
+                        }
+                        break;
+                    }
+
+                }
+
+            }
+            for (int i = 1; i < Grid.GetLength(0); i++)
+            {
+
+                if (BoardPos.X - i >= 0)
+                {
+                    PossibleMoves.Add(new Point(BoardPos.X - i, BoardPos.Y));
+
+                    if (Grid[BoardPos.X - i, BoardPos.Y] != null)
+                    {
+                        if (Grid[BoardPos.X - i, BoardPos.Y].IsBlack == IsBlack)
+                        {
+                            PossibleMoves.Remove(new Point(BoardPos.X - i, BoardPos.Y));
+                        }
+                        break;
+                    }
+
+                }
+
+            }
+            for (int i = 1; i < Grid.GetLength(0); i++)
+            {
+
+                if (BoardPos.Y + i < Grid.GetLength(0) && BoardPos.X + i < Grid.GetLength(0))
+                {
+                    PossibleMoves.Add(new Point(BoardPos.X + i, BoardPos.Y + i));
+
+                    if (Grid[BoardPos.X + i, BoardPos.Y + i] != null)
+                    {
+                        if (Grid[BoardPos.X + i, BoardPos.Y + i].IsBlack == IsBlack)
+                        {
+                            PossibleMoves.Remove(new Point(BoardPos.X + i, BoardPos.Y + i));
+                        }
+                        break;
+                    }
+
+                }
+
+            }
+            for (int i = 1; i < Grid.GetLength(0); i++)
+            {
+                if (BoardPos.Y - i >= 0 && BoardPos.X + i < Grid.GetLength(0))
+                {
+                    PossibleMoves.Add(new Point(BoardPos.X + i, BoardPos.Y - i));
+
+                    if (Grid[BoardPos.X + i, BoardPos.Y - i] != null)
+                    {
+                        if (Grid[BoardPos.X + i, BoardPos.Y - i].IsBlack == IsBlack)
+                        {
+                            PossibleMoves.Remove(new Point(BoardPos.X + i, BoardPos.Y - i));
+                        }
+                        break;
+                    }
+                }
+            }
+            for (int i = 1; i < Grid.GetLength(0); i++)
+            {
+                if (BoardPos.Y + i < Grid.GetLength(0) && BoardPos.X - i >= 0)
+                {
+                    PossibleMoves.Add(new Point(BoardPos.X - i, BoardPos.Y + i));
+
+                    if (Grid[BoardPos.X - i, BoardPos.Y + i] != null)
+                    {
+                        if (Grid[BoardPos.X - i, BoardPos.Y + i].IsBlack == IsBlack)
+                        {
+                            PossibleMoves.Remove(new Point(BoardPos.X - i, BoardPos.Y + i));
+                        }
+                        break;
+                    }
+                }
+            }
+            for (int i = 1; i < Grid.GetLength(0); i++)
+            {
+                if (BoardPos.Y - i >= 0 && BoardPos.X - i >= 0)
+                {
+                    PossibleMoves.Add(new Point(BoardPos.X - i, BoardPos.Y - i));
+
+                    if (Grid[BoardPos.X - i, BoardPos.Y - i] != null)
+                    {
+                        if (Grid[BoardPos.X - i, BoardPos.Y - i].IsBlack == IsBlack)
+                        {
+                            PossibleMoves.Remove(new Point(BoardPos.X - i, BoardPos.Y - i));
+                        }
+                        break;
+                    }
+                }
+            }
+
+            return PossibleMoves;
         }
     }
     public sealed class Bishop : ChessPiece
@@ -67,6 +291,75 @@ namespace Chess
         public override List<Point> Move(ChessPiece[,] Grid)
         {
             
+            for (int i = 1; i < Grid.GetLength(0); i++)
+            {
+
+                if (BoardPos.Y + i < Grid.GetLength(0) && BoardPos.X + i < Grid.GetLength(0))
+                {
+                    PossibleMoves.Add(new Point(BoardPos.X + i, BoardPos.Y + i));
+
+                    if (Grid[BoardPos.X + i, BoardPos.Y + i] != null)
+                    {
+                        if (Grid[BoardPos.X + i, BoardPos.Y + i].IsBlack == IsBlack)
+                        {
+                            PossibleMoves.Remove(new Point(BoardPos.X + i, BoardPos.Y + i));
+                        }
+                        break;
+                    }
+                    
+                }
+              
+            }
+            for (int i = 1; i < Grid.GetLength(0); i++)
+            {
+                if (BoardPos.Y - i >= 0 && BoardPos.X + i < Grid.GetLength(0))
+                {
+                    PossibleMoves.Add(new Point(BoardPos.X + i, BoardPos.Y - i));
+
+                    if (Grid[BoardPos.X + i, BoardPos.Y - i] != null)
+                    {
+                        if (Grid[BoardPos.X + i, BoardPos.Y - i].IsBlack == IsBlack)
+                        {
+                            PossibleMoves.Remove(new Point(BoardPos.X + i, BoardPos.Y - i));
+                        }
+                        break;
+                    }
+                }
+            }
+            for (int i = 1; i < Grid.GetLength(0); i++)
+            {
+                if (BoardPos.Y + i < Grid.GetLength(0) && BoardPos.X - i >= 0)
+                {
+                    PossibleMoves.Add(new Point(BoardPos.X - i, BoardPos.Y + i));
+
+                    if (Grid[BoardPos.X - i, BoardPos.Y + i] != null)
+                    {
+                        if (Grid[BoardPos.X - i, BoardPos.Y + i].IsBlack == IsBlack)
+                        {
+                            PossibleMoves.Remove(new Point(BoardPos.X - i, BoardPos.Y + i));
+                        }
+                        break;
+                    }
+                }
+            }
+            for (int i = 1; i < Grid.GetLength(0); i++)
+            {
+                if (BoardPos.Y - i >= 0 && BoardPos.X - i >= 0)
+                {
+                    PossibleMoves.Add(new Point(BoardPos.X - i, BoardPos.Y - i));
+
+                    if (Grid[BoardPos.X - i, BoardPos.Y - i] != null)
+                    {
+                        if (Grid[BoardPos.X - i, BoardPos.Y - i].IsBlack == IsBlack)
+                        {
+                            PossibleMoves.Remove(new Point(BoardPos.X - i, BoardPos.Y - i));
+                        }
+                        break;
+                    }
+                }
+            }
+
+            return PossibleMoves;
         }
     }
     public sealed class Pawn : ChessPiece
