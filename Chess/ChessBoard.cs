@@ -14,6 +14,7 @@ namespace Chess
     public sealed class ChessBoard : Sprite
     {
         public bool WhiteTurn = true;
+        public bool InCheck = false;
 
         public ChessPiece[,] Grid = new ChessPiece[8,8];
         public ChessBoard(Texture2D tex, Rectangle pos, Color color, float rotation, Vector2 origin)
