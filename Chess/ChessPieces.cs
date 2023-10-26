@@ -290,7 +290,7 @@ namespace Chess
 
         public override List<Point> Move(ChessPiece[,] Grid)
         {
-            
+
             for (int i = 1; i < Grid.GetLength(0); i++)
             {
 
@@ -306,9 +306,9 @@ namespace Chess
                         }
                         break;
                     }
-                    
+
                 }
-              
+
             }
             for (int i = 1; i < Grid.GetLength(0); i++)
             {
@@ -359,12 +359,15 @@ namespace Chess
                 }
             }
 
+
             return PossibleMoves;
         }
     }
     public sealed class Pawn : ChessPiece
     {
         public bool HasMoved = false;
+        public bool PotentiallyEnPassantable = false;
+        public bool UnEnPassantable => !PotentiallyEnPassantable; //Nikita approved, don't touch;
         public Pawn(Point pos, PieceType pieceType, bool isBlack) : base(pos, pieceType, isBlack)
         {
         }
@@ -377,13 +380,33 @@ namespace Chess
                 if (BoardPos.Y + 2 < Grid.GetLength(0) && Grid[BoardPos.X, BoardPos.Y + 1] == null && Grid[BoardPos.X, BoardPos.Y + 2] == null && IsBlack)
                 {
                     PossibleMoves.Add(new Point(BoardPos.X, BoardPos.Y + 2));
+                    PotentiallyEnPassantable = true;
                 }
                 if (BoardPos.Y - 2 >= 0 && Grid[BoardPos.X, BoardPos.Y - 1] == null && Grid[BoardPos.X, BoardPos.Y - 2] == null && !IsBlack)
                 {
                     PossibleMoves.Add(new Point(BoardPos.X, BoardPos.Y - 2));
+                    PotentiallyEnPassantable = true;
                 }
             }
-            
+            if (PotentiallyEnPassantable)
+            {
+                if (BoardPos.X - 1 >= 0 && BoardPos.Y - 1 >= 0 && Grid[BoardPos.X - 1, BoardPos.Y] != null && !IsBlack && Grid[BoardPos.X - 1, BoardPos.Y].IsBlack != IsBlack && Grid[BoardPos.X - 1, BoardPos.Y].GetType() == typeof(Pawn))
+                {
+                    PossibleMoves.Add(new Point(BoardPos.X - 1, BoardPos.Y - 1));
+                }
+                if (BoardPos.X + 1 < Grid.GetLength(0) && BoardPos.Y - 1 >= 0 && Grid[BoardPos.X + 1, BoardPos.Y] != null && !IsBlack && Grid[BoardPos.X + 1, BoardPos.Y].IsBlack != IsBlack && Grid[BoardPos.X + 1, BoardPos.Y].GetType() == typeof(Pawn))
+                {
+                    PossibleMoves.Add(new Point(BoardPos.X + 1, BoardPos.Y - 1));
+                }
+                if (BoardPos.X - 1 >= 0 && BoardPos.Y + 1 < Grid.GetLength(0) && Grid[BoardPos.X - 1, BoardPos.Y] != null && IsBlack && Grid[BoardPos.X - 1, BoardPos.Y].IsBlack != IsBlack && Grid[BoardPos.X - 1, BoardPos.Y].GetType() == typeof(Pawn))
+                {
+                    PossibleMoves.Add(new Point(BoardPos.X - 1, BoardPos.Y + 1));
+                }
+                if (BoardPos.X + 1 < Grid.GetLength(0) && BoardPos.Y + 1 < Grid.GetLength(0) && Grid[BoardPos.X + 1, BoardPos.Y] != null && IsBlack && Grid[BoardPos.X + 1, BoardPos.Y].IsBlack != IsBlack && Grid[BoardPos.X + 1, BoardPos.Y].GetType() == typeof(Pawn))
+                {
+                    PossibleMoves.Add(new Point(BoardPos.X + 1, BoardPos.Y + 1));
+                }
+            }
 
             if (BoardPos.Y + 1 < Grid.GetLength(0) && Grid[BoardPos.X, BoardPos.Y + 1] == null && IsBlack)
             {
@@ -394,7 +417,7 @@ namespace Chess
                 PossibleMoves.Add(new Point(BoardPos.X, BoardPos.Y - 1));
             }
 
-            if (BoardPos.X - 1 >= 0 && BoardPos.Y - 1 >= 0 && Grid[BoardPos.X - 1, BoardPos.Y - 1] != null && !IsBlack && Grid[BoardPos.X -1, BoardPos.Y - 1].IsBlack != IsBlack)
+            if (BoardPos.X - 1 >= 0 && BoardPos.Y - 1 >= 0 && Grid[BoardPos.X - 1, BoardPos.Y - 1] != null && !IsBlack && Grid[BoardPos.X - 1, BoardPos.Y - 1].IsBlack != IsBlack)
             {
                 PossibleMoves.Add(new Point(BoardPos.X - 1, BoardPos.Y - 1));
             }
@@ -411,7 +434,6 @@ namespace Chess
             {
                 PossibleMoves.Add(new Point(BoardPos.X + 1, BoardPos.Y + 1));
             }
-
 
             return PossibleMoves;
         }

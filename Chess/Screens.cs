@@ -31,6 +31,7 @@ namespace Chess
     }
     public class GameScreen : Screen
     {
+        bool WhiteTurn = true;
         const int size = 73;
         public ChessPiece SelectedPiece = null;
         public Texture2D ChessBoardTex;
@@ -151,16 +152,16 @@ namespace Chess
                     x++;
                 }
 
-                
+
             }
         }
 
-     
+
         public override void Begin()
         {
             chessBoard = new ChessBoard(ChessBoardTex, Game1.GameDimensions, Color.White, 0, Vector2.Zero);
             Load("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
-     
+
         }
 
         public override void Draw(SpriteBatch spriteBatch)
@@ -191,23 +192,48 @@ namespace Chess
 
             if (currState.LeftButton == ButtonState.Pressed && prevState.LeftButton == ButtonState.Released)
             {
-                Point pos = new Point((currState.Position.X-50) / size, currState.Position.Y / size);
+                Point pos = new Point((currState.Position.X - 50) / size, currState.Position.Y / size);
                 if (pos.X < 8 && pos.Y < 8)
                 {
                     if (PossibleMoves != null)
                     {
-                        if (PossibleMoves.Contains(new Point(pos.X, pos.Y)))
+                        if (PossibleMoves.Contains(new Point(pos.X, pos.Y)) && SelectedPiece != null)
                         {
                             chessBoard.Grid[SelectedPiece.BoardPos.X, SelectedPiece.BoardPos.Y] = null;
                             SelectedPiece.BoardPos = new Point(pos.X, pos.Y);
                             chessBoard.Grid[pos.X, pos.Y] = SelectedPiece;
 
+                            for (int x = 0; x < chessBoard.Grid.GetLength(0); x++)
+                            {
+                                for (int y = 0; y < chessBoard.Grid.GetLength(0); y++)
+                                {
+                                    if (chessBoard.Grid[x, y] != null && chessBoard.Grid[x, y].GetType() == typeof(Pawn) && chessBoard.Grid[x, y].IsBlack != WhiteTurn)
+                                    {
+                                        var pawn = (Pawn)chessBoard.Grid[x, y];
+                                        pawn.PotentiallyEnPassantable = false;
+                                    }
+                                }
+                            }
+
                             if (chessBoard.Grid[pos.X, pos.Y].GetType() == typeof(Pawn))
                             {
                                 var pawn = (Pawn)chessBoard.Grid[pos.X, pos.Y];
                                 pawn.HasMoved = true;
+                                if (pawn.PotentiallyEnPassantable)
+                                {
+                                    if (pawn.IsBlack)
+                                    {
+                                        chessBoard.Grid[pos.X, pos.Y - 1] = null;
+                                    }
+                                    else
+                                    {
+                                        chessBoard.Grid[pos.X, pos.Y + 1] = null;
+                                    }
+                                }
                             }
 
+                            WhiteTurn = !WhiteTurn;
+                            
                             PossibleMoves.Clear();
                         }
                         else
@@ -223,12 +249,18 @@ namespace Chess
                     }
                     else
                     {
-                        SelectedPiece = chessBoard.Grid[pos.X, pos.Y];
+                        if (pos.X >= 0 && pos.X < chessBoard.Grid.GetLength(0) && pos.Y >= 0 && pos.Y < chessBoard.Grid.GetLength(0))
+                        {
+                            if (chessBoard.Grid[pos.X, pos.Y] != null && chessBoard.Grid[pos.X, pos.Y].IsBlack == !WhiteTurn)
+                            {
+                                SelectedPiece = chessBoard.Grid[pos.X, pos.Y];
+                            }
+                        }
                     }
                 }
             }
-            
-            
+
+
 
             if (SelectedPiece != null)
             {
