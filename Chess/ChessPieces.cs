@@ -21,6 +21,7 @@ namespace Chess
 
         public override List<Point> Move(ChessPiece[,] Grid)
         {
+            PossibleMoves.Clear();
             if (BoardPos.Y + 2 < Grid.GetLength(0) && BoardPos.X + 1 < Grid.GetLength(0))
             {
                 if ((Grid[BoardPos.X + 1, BoardPos.Y + 2] != null && IsBlack != Grid[BoardPos.X +1 , BoardPos.Y + 2].IsBlack) || Grid[BoardPos.X +1 , BoardPos.Y + 2] == null)
@@ -54,7 +55,10 @@ namespace Chess
 
             if (BoardPos.Y + 1 < Grid.GetLength(0) && BoardPos.X + 2 < Grid.GetLength(0))
             {
-               
+                if ((Grid[BoardPos.X + 2, BoardPos.Y + 1] != null && IsBlack != Grid[BoardPos.X + 2, BoardPos.Y + 1].IsBlack) || Grid[BoardPos.X + 2, BoardPos.Y + 1] == null)
+                {
+                    PossibleMoves.Add(new Point(BoardPos.X + 2, BoardPos.Y + 1));
+                }
             }
             if (BoardPos.Y + 1 < Grid.GetLength(0) && BoardPos.X - 2 >= 0)
             {
@@ -66,16 +70,16 @@ namespace Chess
 
             if (BoardPos.Y - 1 >= 0 && BoardPos.X + 2 < Grid.GetLength(0))
             {
-                 if ((Grid[BoardPos.X + 2, BoardPos.Y - 1] != null && IsBlack != Grid[BoardPos.X + 2, BoardPos.Y - 1].IsBlack) || Grid[BoardPos.X + 2, BoardPos.Y - 1] == null)
+                if ((Grid[BoardPos.X + 2, BoardPos.Y - 1] != null && IsBlack != Grid[BoardPos.X + 2, BoardPos.Y - 1].IsBlack) || Grid[BoardPos.X + 2, BoardPos.Y - 1] == null)
                 { 
                 PossibleMoves.Add(new Point(BoardPos.X + 2, BoardPos.Y - 1));
                 }
             }
             if (BoardPos.Y - 1 >= 0 && BoardPos.X - 2 >= 0)
             {
-                 if ((Grid[BoardPos.X - 2, BoardPos.Y - 1] != null && IsBlack != Grid[BoardPos.X + 2, BoardPos.Y - 1].IsBlack) || Grid[BoardPos.X + 2, BoardPos.Y - 1] == null)
+                if ((Grid[BoardPos.X - 2, BoardPos.Y - 1] != null && IsBlack != Grid[BoardPos.X - 2, BoardPos.Y - 1].IsBlack) || Grid[BoardPos.X - 2, BoardPos.Y - 1] == null)
                 { 
-                PossibleMoves.Add(new Point(BoardPos.X - 2, BoardPos.Y - 1));
+                    PossibleMoves.Add(new Point(BoardPos.X - 2, BoardPos.Y - 1));
                 }
             }
 
@@ -91,6 +95,7 @@ namespace Chess
 
         public override List<Point> Move(ChessPiece[,] Grid)
         {
+            PossibleMoves.Clear();
             for (int i = 1; i < Grid.GetLength(0); i++)
             {
 
@@ -177,10 +182,11 @@ namespace Chess
         public bool HasMoved = false;
         public King(Point pos, PieceType pieceType, bool isBlack) : base(pos, pieceType, isBlack)
         {
-        }
 
+        }
         public override List<Point> Move(ChessPiece[,] Grid)
         {
+            PossibleMoves.Clear();
             if (BoardPos.Y + 1 < Grid.GetLength(0) && BoardPos.X + 1 < Grid.GetLength(0))
             {
                 if ((Grid[BoardPos.X + 1, BoardPos.Y + 1] != null && IsBlack != Grid[BoardPos.X + 1, BoardPos.Y + 1].IsBlack) || Grid[BoardPos.X + 1, BoardPos.Y + 1] == null)
@@ -251,6 +257,7 @@ namespace Chess
 
         public override List<Point> Move(ChessPiece[,] Grid)
         {
+            PossibleMoves.Clear();
             for (int i = 1; i < Grid.GetLength(0); i++)
             {
 
@@ -406,7 +413,7 @@ namespace Chess
 
         public override List<Point> Move(ChessPiece[,] Grid)
         {
-
+            PossibleMoves.Clear();
             for (int i = 1; i < Grid.GetLength(0); i++)
             {
 
@@ -490,7 +497,7 @@ namespace Chess
 
         public override List<Point> Move(ChessPiece[,] Grid)
         {
-
+            PossibleMoves.Clear();
             if (!HasMoved)
             {
                 if (BoardPos.Y + 2 < Grid.GetLength(0) && Grid[BoardPos.X, BoardPos.Y + 1] == null && Grid[BoardPos.X, BoardPos.Y + 2] == null && IsBlack)

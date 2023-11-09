@@ -38,7 +38,10 @@ namespace Chess
         public static Texture2D ChessPiecesTex;
         public ChessBoard chessBoard;
         public List<Point> PossibleMoves;
+        bool drawCheck;
         MouseState prevState;
+        bool inCheck = false;
+
         public Dictionary<Textures, Rectangle> sprites = new Dictionary<Textures, Rectangle>()
         {
             [Textures.Queen] = new Rectangle(4, 70, 52, 48),
@@ -181,6 +184,13 @@ namespace Chess
                     spriteBatch.DrawRectangle(new Rectangle(50 + PossibleMoves[i].X * size, size * PossibleMoves[i].Y, 75, 75), Color.Lime, 1, 0);
                 }
             }
+            if (drawCheck)
+            {
+                Point KingPos = chessBoard.FindKing(WhiteTurn);
+
+                spriteBatch.DrawRectangle(new Rectangle(50 + KingPos.X * size, size * KingPos.Y, 75, 75), Color.Red, 1, 0);
+
+            }
 
 
             spriteBatch.End();
@@ -190,18 +200,47 @@ namespace Chess
         {
             MouseState currState = Mouse.GetState();
 
+            inCheck = chessBoard.IsInCheck(WhiteTurn);
+
+            if (inCheck) drawCheck = true;
+
             if (currState.LeftButton == ButtonState.Pressed && prevState.LeftButton == ButtonState.Released)
             {
                 Point pos = new Point((currState.Position.X - 50) / size, currState.Position.Y / size);
                 if (pos.X < 8 && pos.Y < 8)
                 {
-                    if (PossibleMoves != null)
+                    if (PossibleMoves != null && SelectedPiece != null)
                     {
-                        if (PossibleMoves.Contains(new Point(pos.X, pos.Y)) && SelectedPiece != null)
+                        for (int i = 0; i < PossibleMoves.Count; i++)
+                        {
+                            if (chessBoard.IsInCheck(!SelectedPiece.IsBlack))
+                            {
+                                var temp = SelectedPiece.BoardPos;
+                                ChessPiece temp2 = chessBoard.Grid[PossibleMoves[i].X, PossibleMoves[i].Y];
+                                Point tempPoint = new Point(PossibleMoves[i].X, PossibleMoves[i].Y);
+                                SelectedPiece.BoardPos = new Point(PossibleMoves[i].X, PossibleMoves[i].Y);
+                                chessBoard.Grid[PossibleMoves[i].X, PossibleMoves[i].Y] = SelectedPiece;
+
+                                if (chessBoard.IsInCheck(!SelectedPiece.IsBlack))
+                                {
+                                    PossibleMoves.RemoveAt(i);
+                                }
+                                SelectedPiece.BoardPos = temp;
+                                chessBoard.Grid[tempPoint.X, tempPoint.Y] = temp2;
+
+                            }
+                        }
+
+                        if (PossibleMoves.Contains(new Point(pos.X, pos.Y)) )
                         {
                             chessBoard.Grid[SelectedPiece.BoardPos.X, SelectedPiece.BoardPos.Y] = null;
                             SelectedPiece.BoardPos = new Point(pos.X, pos.Y);
                             chessBoard.Grid[pos.X, pos.Y] = SelectedPiece;
+
+                            PossibleMoves = SelectedPiece.Move(chessBoard.Grid);
+
+                          
+
 
                             for (int x = 0; x < chessBoard.Grid.GetLength(0); x++)
                             {
@@ -233,7 +272,7 @@ namespace Chess
                             }
 
                             WhiteTurn = !WhiteTurn;
-                            
+
                             PossibleMoves.Clear();
                         }
                         else
