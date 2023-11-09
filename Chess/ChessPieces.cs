@@ -187,6 +187,7 @@ namespace Chess
         public override List<Point> Move(ChessPiece[,] Grid)
         {
             PossibleMoves.Clear();
+
             if (BoardPos.Y + 1 < Grid.GetLength(0) && BoardPos.X + 1 < Grid.GetLength(0))
             {
                 if ((Grid[BoardPos.X + 1, BoardPos.Y + 1] != null && IsBlack != Grid[BoardPos.X + 1, BoardPos.Y + 1].IsBlack) || Grid[BoardPos.X + 1, BoardPos.Y + 1] == null)
