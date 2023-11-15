@@ -292,18 +292,21 @@ namespace Chess
                                     {
                                         if (chessBoard.IsInCheck(!SelectedPiece.IsBlack))
                                         {
-                                            if (chessBoard.Grid[i, j] != null)
+                                            if (chessBoard.Grid[i, j] != null && chessBoard.Grid[i, j].IsBlack != WhiteTurn)
                                             {
                                                 
                                                 for (int x = 0; x < chessBoard.Grid[i, j].PossibleMoves.Count; x++)
                                                 {
+                                                    if (chessBoard.Grid[i, j].PossibleMoves.Count <= 0) break;
+                                                    
                                                     var temp = chessBoard.Grid[i, j].BoardPos;
                                                     ChessPiece temp2 = chessBoard.Grid[chessBoard.Grid[i, j].PossibleMoves[x].X, chessBoard.Grid[i, j].PossibleMoves[x].Y];
                                                     Point tempPoint = new Point(chessBoard.Grid[i, j].PossibleMoves[x].X, chessBoard.Grid[i, j].PossibleMoves[x].Y);
                                                     chessBoard.Grid[i, j].BoardPos = new Point(chessBoard.Grid[i, j].PossibleMoves[x].X, chessBoard.Grid[i, j].PossibleMoves[x].Y);
-                                                    chessBoard.Grid[chessBoard.Grid[i, j].PossibleMoves[i].X, chessBoard.Grid[i, j].PossibleMoves[x].Y] = chessBoard.Grid[i, j];
+                                                    chessBoard.Grid[chessBoard.Grid[i, j].PossibleMoves[x].X, chessBoard.Grid[i, j].PossibleMoves[x].Y] = chessBoard.Grid[i, j];
 
                                                     var tempPossibleMoves = chessBoard.Grid[i, j].PossibleMoves;
+                                                    //WHY DOES TEMPPOSSIBLEMOVES CHANGE!!!!!!!!!!!!!!!!!!!!
                                                     if (chessBoard.IsInCheck(!SelectedPiece.IsBlack))
                                                     {
                                                         chessBoard.Grid[i, j].PossibleMoves = tempPossibleMoves;
