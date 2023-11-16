@@ -21,6 +21,7 @@ namespace Chess
 
         public override List<Point> Move(ChessPiece[,] Grid)
         {
+            List<Point> PossibleMoves = new List<Point>();
             PossibleMoves.Clear();
             if (BoardPos.Y + 2 < Grid.GetLength(0) && BoardPos.X + 1 < Grid.GetLength(0))
             {
@@ -95,6 +96,7 @@ namespace Chess
 
         public override List<Point> Move(ChessPiece[,] Grid)
         {
+            List<Point> PossibleMoves = new List<Point>();
             PossibleMoves.Clear();
             for (int i = 1; i < Grid.GetLength(0); i++)
             {
@@ -186,6 +188,7 @@ namespace Chess
         }
         public override List<Point> Move(ChessPiece[,] Grid)
         {
+            List<Point> PossibleMoves = new List<Point>();
             PossibleMoves.Clear();
 
             if (BoardPos.Y + 1 < Grid.GetLength(0) && BoardPos.X + 1 < Grid.GetLength(0))
@@ -258,6 +261,7 @@ namespace Chess
 
         public override List<Point> Move(ChessPiece[,] Grid)
         {
+            List<Point> PossibleMoves = new List<Point>();
             PossibleMoves.Clear();
             for (int i = 1; i < Grid.GetLength(0); i++)
             {
@@ -414,6 +418,7 @@ namespace Chess
 
         public override List<Point> Move(ChessPiece[,] Grid)
         {
+            List<Point> PossibleMoves = new List<Point>();
             PossibleMoves.Clear();
             for (int i = 1; i < Grid.GetLength(0); i++)
             {
@@ -498,6 +503,8 @@ namespace Chess
 
         public override List<Point> Move(ChessPiece[,] Grid)
         {
+            List<Point> PossibleMoves = new List<Point>();
+
             PossibleMoves.Clear();
             if (!HasMoved)
             {

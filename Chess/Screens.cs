@@ -209,6 +209,8 @@ namespace Chess
                 Point pos = new Point((currState.Position.X - 50) / size, currState.Position.Y / size);
                 if (pos.X < 8 && pos.Y < 8)
                 {
+                    #region
+
                     if (PossibleMoves != null && SelectedPiece != null)
                     {
                        
@@ -276,56 +278,39 @@ namespace Chess
                             {
                                 SelectedPiece = chessBoard.Grid[pos.X, pos.Y];
                                 PossibleMoves = new List<Point>();
-                                for (int a = 0; a < 8; a++)
-                                {
-                                    for (int b = 0; b < 8; b++)
-                                    {
-                                        if (chessBoard.Grid[a, b] != null)
-                                        {
-                                            PossibleMoves.AddRange(chessBoard.Grid[a, b].Move(chessBoard.Grid));
-                                        }
-                                    }
-                                }
-                                for (int i = 0; i < 8; i++)
-                                {
-                                    for (int j = 0; j < 8; j++)
-                                    {
-                                        if (chessBoard.IsInCheck(!SelectedPiece.IsBlack))
-                                        {
-                                            if (chessBoard.Grid[i, j] != null && chessBoard.Grid[i, j].IsBlack != WhiteTurn)
-                                            {
-                                                
-                                                for (int x = 0; x < chessBoard.Grid[i, j].PossibleMoves.Count; x++)
-                                                {
-                                                    if (chessBoard.Grid[i, j].PossibleMoves.Count <= 0) break;
-                                                    
-                                                    var temp = chessBoard.Grid[i, j].BoardPos;
-                                                    ChessPiece temp2 = chessBoard.Grid[chessBoard.Grid[i, j].PossibleMoves[x].X, chessBoard.Grid[i, j].PossibleMoves[x].Y];
-                                                    Point tempPoint = new Point(chessBoard.Grid[i, j].PossibleMoves[x].X, chessBoard.Grid[i, j].PossibleMoves[x].Y);
-                                                    chessBoard.Grid[i, j].BoardPos = new Point(chessBoard.Grid[i, j].PossibleMoves[x].X, chessBoard.Grid[i, j].PossibleMoves[x].Y);
-                                                    chessBoard.Grid[chessBoard.Grid[i, j].PossibleMoves[x].X, chessBoard.Grid[i, j].PossibleMoves[x].Y] = chessBoard.Grid[i, j];
 
-                                                    var tempPossibleMoves = chessBoard.Grid[i, j].PossibleMoves;
-                                                    //WHY DOES TEMPPOSSIBLEMOVES CHANGE!!!!!!!!!!!!!!!!!!!!
-                                                    if (chessBoard.IsInCheck(!SelectedPiece.IsBlack))
-                                                    {
-                                                        chessBoard.Grid[i, j].PossibleMoves = tempPossibleMoves;
-                                                        chessBoard.Grid[i, j].PossibleMoves.RemoveAt(x);
-                                                    }
-                                                    chessBoard.Grid[i, j].BoardPos = temp;
-                                                    chessBoard.Grid[tempPoint.X, tempPoint.Y] = temp2;
+                                        if (SelectedPiece != null)
+                                        {
+                                            var tempers = SelectedPiece.Move(chessBoard.Grid);
+
+                                            for (int i  = 0; i < tempers.Count; i ++)
+                                            {
+                                                var temp = SelectedPiece.BoardPos;
+                                                ChessPiece temp2 = chessBoard.Grid[tempers[i].X, tempers[i].Y];
+                                                Point tempPoint = new Point(tempers[i].X, tempers[i].Y);
+
+                                                SelectedPiece.BoardPos = new Point(tempers[i].X, tempers[i].Y);
+                                                chessBoard.Grid[tempers[i].X, tempers[i].Y] = SelectedPiece;
+
+                                                if (!chessBoard.IsInCheck(!SelectedPiece.IsBlack))
+                                                {
+                                                    PossibleMoves.Add(tempers[i]);
+                                                    
                                                 }
 
-                                                
+
+                                                SelectedPiece.BoardPos = temp;
+                                                chessBoard.Grid[tempPoint.X, tempPoint.Y] = temp2;
                                             }
                                         }
-                                    }
-                                }
+                                  
 
                             }
                         }
                     }
-                    
+
+                    #endregion
+
                 }
             }
 
@@ -333,7 +318,7 @@ namespace Chess
 
             if (SelectedPiece != null)
             {
-                PossibleMoves = SelectedPiece.Move(chessBoard.Grid);
+                //PossibleMoves = SelectedPiece.Move(chessBoard.Grid);
             }
 
             prevState = currState;
