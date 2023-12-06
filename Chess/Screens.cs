@@ -292,6 +292,8 @@ namespace Chess
                                                 SelectedPiece.BoardPos = new Point(tempers[i].X, tempers[i].Y);
                                                 chessBoard.Grid[tempers[i].X, tempers[i].Y] = SelectedPiece;
 
+                                                //These checks might not be right because sometimes King doesn't have all available moves?
+
                                                 if (!chessBoard.IsInCheck(!SelectedPiece.IsBlack))
                                                 {
                                                     PossibleMoves.Add(tempers[i]);
