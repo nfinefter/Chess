@@ -80,6 +80,7 @@ namespace Chess
                             if (move != KingPos)
                             {
                                 checkMate = false;
+                                //fix here
                             }
                         }
                     }
