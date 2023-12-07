@@ -1,11 +1,14 @@
 ﻿
 global using HelperLibrary;
+
+using Microsoft.VisualBasic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
 using System.Collections.Generic;
+using System.IO;
 using System.Numerics;
 using System.Security.Cryptography.X509Certificates;
 
@@ -36,8 +39,10 @@ namespace Chess
         }
 
         public static Rectangle GameDimensions;
-          
 
+        SpriteFont font;
+
+        public static GameFont gameFont;
         protected override void Initialize()
         {
 
@@ -66,7 +71,8 @@ namespace Chess
         protected override void LoadContent()
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
-
+            font = Content.Load<SpriteFont>("File");
+            gameFont = new GameFont(font, "CheckMate", new Rectangle((GameDimensions.X + GameDimensions.Width)/ 2, (GameDimensions.Y + GameDimensions.Height)/ 2, 300, 300), Color.Green, 0);
         }
 
         protected override void Update(GameTime gameTime)

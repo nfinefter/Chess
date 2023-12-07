@@ -7,6 +7,7 @@ using MonoGame.Extended;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -41,6 +42,7 @@ namespace Chess
         bool drawCheck;
         MouseState prevState;
         bool inCheck = false;
+        bool checkMate = false;
 
         public Dictionary<Textures, Rectangle> sprites = new Dictionary<Textures, Rectangle>()
         {
@@ -191,8 +193,10 @@ namespace Chess
                 spriteBatch.DrawRectangle(new Rectangle(50 + KingPos.X * size, size * KingPos.Y, 75, 75), Color.Red, 1, 0);
 
             }
-
-
+            if (checkMate)
+            {
+                Game1.gameFont.DrawString(spriteBatch);
+            }
             spriteBatch.End();
         }
 
@@ -213,8 +217,8 @@ namespace Chess
 
                     if (PossibleMoves != null && SelectedPiece != null)
                     {
-                       
-                        if (PossibleMoves.Contains(new Point(pos.X, pos.Y)) )
+
+                        if (PossibleMoves.Contains(new Point(pos.X, pos.Y)))
                         {
                             chessBoard.Grid[SelectedPiece.BoardPos.X, SelectedPiece.BoardPos.Y] = null;
                             SelectedPiece.BoardPos = new Point(pos.X, pos.Y);
@@ -222,7 +226,7 @@ namespace Chess
 
                             PossibleMoves = SelectedPiece.Move(chessBoard.Grid);
 
-                          
+
 
 
                             for (int x = 0; x < chessBoard.Grid.GetLength(0); x++)
@@ -279,37 +283,46 @@ namespace Chess
                                 SelectedPiece = chessBoard.Grid[pos.X, pos.Y];
                                 PossibleMoves = new List<Point>();
 
-                                        if (SelectedPiece != null)
+                                if (SelectedPiece != null)
+                                {
+                                    var potentialMoves = SelectedPiece.Move(chessBoard.Grid);
+
+                                    for (int i = 0; i < potentialMoves.Count; i++)
+                                    {
+                                        var tempBoardPos = SelectedPiece.BoardPos;
+                                        ChessPiece tempPiece = chessBoard.Grid[potentialMoves[i].X, potentialMoves[i].Y];
+                                        Point tempGridPos = new Point(potentialMoves[i].X, potentialMoves[i].Y);
+
+                                        SelectedPiece.BoardPos = new Point(potentialMoves[i].X, potentialMoves[i].Y);
+                                        chessBoard.Grid[potentialMoves[i].X, potentialMoves[i].Y] = SelectedPiece;
+
+                                        var tempPreviousPos = chessBoard.Grid[pos.X, pos.Y];
+
+                                        chessBoard.Grid[pos.X, pos.Y] = null;
+
+                                        if (!chessBoard.IsInCheck(!SelectedPiece.IsBlack))
                                         {
-                                            var tempers = SelectedPiece.Move(chessBoard.Grid);
-
-                                            for (int i  = 0; i < tempers.Count; i ++)
-                                            {
-                                                var temp = SelectedPiece.BoardPos;
-                                                ChessPiece temp2 = chessBoard.Grid[tempers[i].X, tempers[i].Y];
-                                                Point tempPoint = new Point(tempers[i].X, tempers[i].Y);
-
-                                                SelectedPiece.BoardPos = new Point(tempers[i].X, tempers[i].Y);
-                                                chessBoard.Grid[tempers[i].X, tempers[i].Y] = SelectedPiece;
-
-                                                //These checks might not be right because sometimes King doesn't have all available moves?
-
-                                                if (!chessBoard.IsInCheck(!SelectedPiece.IsBlack))
-                                                {
-                                                    PossibleMoves.Add(tempers[i]);
-                                                    
-                                                }
-
-
-                                                SelectedPiece.BoardPos = temp;
-                                                chessBoard.Grid[tempPoint.X, tempPoint.Y] = temp2;
-                                            }
+                                            PossibleMoves.Add(potentialMoves[i]);
                                         }
-                                  
+                                        else if (chessBoard.IsInCheckMate(!SelectedPiece.IsBlack))
+                                        {
+                                            checkMate = true;
+
+                                        }
+
+                                        chessBoard.Grid[pos.X, pos.Y] = tempPreviousPos;
+
+                                        SelectedPiece.BoardPos = tempBoardPos;
+                                        chessBoard.Grid[tempGridPos.X, tempGridPos.Y] = tempPiece;
+                                    }
+
+                                }
+
 
                             }
                         }
                     }
+
 
                     #endregion
 
