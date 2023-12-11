@@ -65,8 +65,6 @@ namespace Chess
         }
         public bool IsInCheckMate(bool isWhite)
         {
-
-            bool checkMate = false;
             Point KingPos = FindKing(isWhite);
 
             List<Point> moves = new List<Point>();
@@ -77,21 +75,45 @@ namespace Chess
                     if (Grid[i, j] != null && Grid[i, j].IsBlack == !isWhite)
                     {
                         moves.AddRange(Grid[i, j].Move(Grid));
-                        checkMate = SimulateMoves(moves);
+                        if (!SimulateMoves(moves, Grid[i, j]))
+                        {
+                            return false;
+                        }
                     }
                 }
             }
 
-            return checkMate;
+            return true;
         }
-        public bool SimulateMoves(List<Point> Moves)
+        public bool SimulateMoves(List<Point> Moves, ChessPiece Piece)
         {
+            bool checkMate = true;
+
             foreach (var move in Moves)
             {
+                var tempBoardPos = Piece.BoardPos;
+                ChessPiece tempPiece = Grid[move.X, move.Y];
+                Point tempGridPos = new Point(move.X, move.Y);
 
+                Piece.BoardPos = new Point(move.X, move.Y);
+                Grid[move.X, move.Y] = Piece;
+
+                var tempPreviousPos = Grid[Piece.BoardPos.X, Piece.BoardPos.Y];
+
+                if (!IsInCheck(!Piece.IsBlack))
+                {
+                    checkMate = false;
+                }
+
+                Grid[Piece.BoardPos.X, Piece.BoardPos.Y] = null;
+
+                Grid[Piece.BoardPos.X, Piece.BoardPos.Y] = tempPreviousPos;
+
+                Piece.BoardPos = tempBoardPos;
+                Grid[tempGridPos.X, tempGridPos.Y] = tempPiece;
             }
 
-            return true;
+            return checkMate;
         }
         public override void Draw(SpriteBatch spriteBatch)
         {
