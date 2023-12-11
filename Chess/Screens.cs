@@ -307,7 +307,6 @@ namespace Chess
                                         else if (chessBoard.IsInCheckMate(!SelectedPiece.IsBlack))
                                         {
                                             checkMate = true;
-
                                         }
 
                                         chessBoard.Grid[pos.X, pos.Y] = tempPreviousPos;

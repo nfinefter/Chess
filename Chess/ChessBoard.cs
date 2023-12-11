@@ -65,31 +65,34 @@ namespace Chess
         }
         public bool IsInCheckMate(bool isWhite)
         {
-            bool checkMate = false;
 
+            bool checkMate = false;
             Point KingPos = FindKing(isWhite);
+
+            List<Point> moves = new List<Point>();
             for (int i = 0; i < 8; i++)
             {
                 for (int j = 0; j < 8; j++)
                 {
-                    if (Grid[i, j] != null && Grid[i, j].IsBlack == isWhite)
+                    if (Grid[i, j] != null && Grid[i, j].IsBlack == !isWhite)
                     {
-                        var moves = Grid[i, j].Move(Grid);
-                        foreach (var move in moves)
-                        {
-                            if (move != KingPos)
-                            {
-                                checkMate = false;
-                                //fix here
-                            }
-                        }
+                        moves.AddRange(Grid[i, j].Move(Grid));
+                        checkMate = SimulateMoves(moves);
                     }
                 }
-
             }
+
             return checkMate;
         }
+        public bool SimulateMoves(List<Point> Moves)
+        {
+            foreach (var move in Moves)
+            {
 
+            }
+
+            return true;
+        }
         public override void Draw(SpriteBatch spriteBatch)
         {
 
