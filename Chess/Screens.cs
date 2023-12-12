@@ -304,15 +304,18 @@ namespace Chess
                                         {
                                             PossibleMoves.Add(potentialMoves[i]);
                                         }
-                                        else if (chessBoard.IsInCheckMate(!SelectedPiece.IsBlack))
-                                        {
-                                            checkMate = true;
-                                        }
+
 
                                         chessBoard.Grid[pos.X, pos.Y] = tempPreviousPos;
 
                                         SelectedPiece.BoardPos = tempBoardPos;
                                         chessBoard.Grid[tempGridPos.X, tempGridPos.Y] = tempPiece;
+
+                                        if (chessBoard.IsInCheckMate(!SelectedPiece.IsBlack))
+                                        {
+                                            checkMate = true;
+                                        }
+
                                     }
 
                                 }

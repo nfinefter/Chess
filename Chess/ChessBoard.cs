@@ -56,8 +56,9 @@ namespace Chess
                         if (moves.Contains(KingPos))
                         {
                             return true;
+                            //KingPos is 4, 7 but the Queen when it should be 5, 6 after being killed by the king basically it is missing after the simulation.
                         }
-                    }                
+                    }
                 }
 
             }
@@ -75,20 +76,20 @@ namespace Chess
                     if (Grid[i, j] != null && Grid[i, j].IsBlack == !isWhite)
                     {
                         moves.AddRange(Grid[i, j].Move(Grid));
-                        if (!SimulateMoves(moves, Grid[i, j]))
+                        if (!IsInCheckPostSimulation(moves, Grid[i, j]))
                         {
                             return false;
                         }
+                        moves.Clear();
                     }
                 }
             }
 
             return true;
         }
-        public bool SimulateMoves(List<Point> Moves, ChessPiece Piece)
+        public bool IsInCheckPostSimulation(List<Point> Moves, ChessPiece Piece)
         {
             bool checkMate = true;
-
             foreach (var move in Moves)
             {
                 var tempBoardPos = Piece.BoardPos;
@@ -100,12 +101,12 @@ namespace Chess
 
                 var tempPreviousPos = Grid[Piece.BoardPos.X, Piece.BoardPos.Y];
 
+                Grid[Piece.BoardPos.X, Piece.BoardPos.Y] = null;
+
                 if (!IsInCheck(!Piece.IsBlack))
                 {
                     checkMate = false;
                 }
-
-                Grid[Piece.BoardPos.X, Piece.BoardPos.Y] = null;
 
                 Grid[Piece.BoardPos.X, Piece.BoardPos.Y] = tempPreviousPos;
 
