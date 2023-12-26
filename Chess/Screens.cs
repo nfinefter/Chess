@@ -43,6 +43,8 @@ namespace Chess
         MouseState prevState;
         bool inCheck = false;
         bool checkMate = false;
+        bool pawnPromotion = false;
+        ChessPiece promotingPawn;
 
         public Dictionary<Textures, Rectangle> sprites = new Dictionary<Textures, Rectangle>()
         {
@@ -197,6 +199,11 @@ namespace Chess
             {
                 Game1.gameFont.DrawString(spriteBatch);
             }
+            if (pawnPromotion)
+            {
+                chessBoard.DrawPromotionPieces(spriteBatch, promotingPawn.IsBlack);
+            }
+
             spriteBatch.End();
         }
 
@@ -215,6 +222,19 @@ namespace Chess
                 {
                     #region
 
+                    if (pawnPromotion)
+                    {
+                        for (int i = 0; i < chessBoard.PromotionPieces.Count; i++)
+                        {
+                            if (chessBoard.PromotionPieces[i].Intersects(new Rectangle(currState.Position.X, currState.Position.Y, 10, 10)))
+                            {
+                                promotingPawn = chessBoard.PawnPromotion((Pawn)promotingPawn, chessBoard.RectangleToPieceType[chessBoard.PromotionPieces[i]]);
+                                pawnPromotion = false;
+                            }
+
+                        }  
+                    }
+
                     if (PossibleMoves != null && SelectedPiece != null)
                     {
 
@@ -222,6 +242,17 @@ namespace Chess
                         {
                             chessBoard.Grid[SelectedPiece.BoardPos.X, SelectedPiece.BoardPos.Y] = null;
                             SelectedPiece.BoardPos = new Point(pos.X, pos.Y);
+                            if (SelectedPiece.GetType() == typeof(Pawn) && SelectedPiece.BoardPos.Y == 0 && !SelectedPiece.IsBlack)
+                            {
+                                pawnPromotion = true;
+                                promotingPawn = (Pawn)SelectedPiece;
+                            }
+                            if (SelectedPiece.GetType() == typeof(Pawn) && SelectedPiece.BoardPos.Y == 7 && SelectedPiece.IsBlack)
+                            { 
+                                pawnPromotion = true;
+                                promotingPawn = (Pawn)SelectedPiece;
+                            }
+
                             chessBoard.Grid[pos.X, pos.Y] = SelectedPiece;
 
                             PossibleMoves = SelectedPiece.Move(chessBoard.Grid);

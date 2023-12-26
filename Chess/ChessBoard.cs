@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 using MonoGame.Extended;
 
@@ -17,6 +18,24 @@ namespace Chess
         public bool InCheck = false;
 
         public ChessPiece[,] Grid = new ChessPiece[8, 8];
+
+        public List<Rectangle> PromotionPieces = new List<Rectangle>()
+        {
+            new Rectangle(0, 0, 50, 50),
+            new Rectangle(0, 75, 50, 50),
+            new Rectangle(0, 150, 50, 50),
+            new Rectangle(0, 225, 50, 50)
+        };
+
+        public Dictionary<Rectangle, ChessPiece.PieceType> RectangleToPieceType = new Dictionary<Rectangle, ChessPiece.PieceType>()
+        {
+            [new Rectangle(0, 0, 50, 50)] = ChessPiece.PieceType.Queen,
+            [new Rectangle(0, 75, 50, 50)] = ChessPiece.PieceType.Rook,
+            [new Rectangle(0, 150, 50, 50)] = ChessPiece.PieceType.Knight,
+            [new Rectangle(0, 225, 50, 50)] = ChessPiece.PieceType.Bishop
+        };
+
+
         public ChessBoard(Texture2D tex, Rectangle pos, Color color, float rotation, Vector2 origin)
             : base(tex, pos, color, rotation, origin)
         {
@@ -116,6 +135,31 @@ namespace Chess
 
             return checkMate;
         }
+
+        public ChessPiece PawnPromotion(Pawn pawn, ChessPiece.PieceType newPieceType)
+        {
+
+            pawn.Type = newPieceType;
+
+            return pawn;
+        }
+
+        public void DrawPromotionPieces(SpriteBatch sb, bool isBlack)
+        {
+
+            int y = 75;
+            foreach (var Piece in GameScreen.PieceToSprite)
+            {
+                if (!(Piece.Key == ChessPiece.PieceType.King || Piece.Key == ChessPiece.PieceType.Pawn))
+                {
+                    sb.Draw(GameScreen.ChessPiecesTex, new Rectangle(0, 0 + y, 50, 50), GameScreen.PieceToSprite[Piece.Key].Item2, isBlack ? Color.Black : Color.White);
+                    
+                    y += 75;
+                }
+            }
+           
+        }
+
         public override void Draw(SpriteBatch spriteBatch)
         {
 
@@ -132,9 +176,6 @@ namespace Chess
                     }
                 }
             }
-
-
-
         }
 
     }
