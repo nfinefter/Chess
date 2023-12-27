@@ -87,6 +87,7 @@ namespace Chess
         {
             Point KingPos = FindKing(isWhite);
 
+            
             List<Point> moves = new List<Point>();
             for (int i = 0; i < 8; i++)
             {
@@ -111,15 +112,9 @@ namespace Chess
             bool checkMate = true;
             foreach (var move in Moves)
             {
-                var tempBoardPos = Piece.BoardPos;
-                ChessPiece tempPiece = Grid[move.X, move.Y];
-                Point tempGridPos = new Point(move.X, move.Y);
+                ChessPiece savePiece = Grid[move.X, move.Y];
 
-                Piece.BoardPos = new Point(move.X, move.Y);
                 Grid[move.X, move.Y] = Piece;
-
-                var tempPreviousPos = Grid[Piece.BoardPos.X, Piece.BoardPos.Y];
-
                 Grid[Piece.BoardPos.X, Piece.BoardPos.Y] = null;
 
                 if (!IsInCheck(!Piece.IsBlack))
@@ -127,10 +122,30 @@ namespace Chess
                     checkMate = false;
                 }
 
-                Grid[Piece.BoardPos.X, Piece.BoardPos.Y] = tempPreviousPos;
+                Grid[Piece.BoardPos.X, Piece.BoardPos.Y] = Piece;
+                Grid[move.X, move.Y] = savePiece;
 
-                Piece.BoardPos = tempBoardPos;
-                Grid[tempGridPos.X, tempGridPos.Y] = tempPiece;
+                //var tempBoardPos = Piece.BoardPos;
+                //ChessPiece tempPiece = Grid[move.X, move.Y];
+                //Point tempGridPos = new Point(move.X, move.Y);//don't be stupid
+
+                //Piece.BoardPos = new Point(move.X, move.Y);
+                //Grid[move.X, move.Y] = Piece;
+
+                //var tempPreviousPos = Grid[Piece.BoardPos.X, Piece.BoardPos.Y];
+
+                //Grid[Piece.BoardPos.X, Piece.BoardPos.Y] = null;
+
+                //if (!IsInCheck(!Piece.IsBlack))
+                //{
+                //    checkMate = false;
+                //}
+
+
+                //Grid[Piece.BoardPos.X, Piece.BoardPos.Y] = tempPreviousPos;
+
+                //Piece.BoardPos = tempBoardPos;
+                //Grid[tempGridPos.X, tempGridPos.Y] = tempPiece;
             }
 
             return checkMate;
@@ -146,8 +161,10 @@ namespace Chess
 
         public void DrawPromotionPieces(SpriteBatch sb, bool isBlack)
         {
+            int y = 0;
 
-            int y = 75;
+            sb.FillRectangle(0, 0, 50, 300, Color.Red, 0);
+
             foreach (var Piece in GameScreen.PieceToSprite)
             {
                 if (!(Piece.Key == ChessPiece.PieceType.King || Piece.Key == ChessPiece.PieceType.Pawn))
@@ -157,7 +174,6 @@ namespace Chess
                     y += 75;
                 }
             }
-           
         }
 
         public override void Draw(SpriteBatch spriteBatch)

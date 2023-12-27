@@ -226,9 +226,28 @@ namespace Chess
                     {
                         for (int i = 0; i < chessBoard.PromotionPieces.Count; i++)
                         {
-                            if (chessBoard.PromotionPieces[i].Intersects(new Rectangle(currState.Position.X, currState.Position.Y, 10, 10)))
+                            if (chessBoard.PromotionPieces[i].Intersects(new Rectangle(currState.Position.X, currState.Position.Y, 5, 5)))
                             {
                                 promotingPawn = chessBoard.PawnPromotion((Pawn)promotingPawn, chessBoard.RectangleToPieceType[chessBoard.PromotionPieces[i]]);
+
+                                switch(promotingPawn.Type)
+                                {
+                                    case ChessPiece.PieceType.Queen:
+                                        chessBoard.Grid[promotingPawn.BoardPos.X, promotingPawn.BoardPos.Y] = new Queen(new Point(promotingPawn.BoardPos.X, promotingPawn.BoardPos.Y), promotingPawn.Type, promotingPawn.IsBlack);
+                                        break;
+                                    case ChessPiece.PieceType.Rook:
+                                        chessBoard.Grid[promotingPawn.BoardPos.X, promotingPawn.BoardPos.Y] = new Rook(new Point(promotingPawn.BoardPos.X, promotingPawn.BoardPos.Y), promotingPawn.Type, promotingPawn.IsBlack);
+                                        break;
+                                    case ChessPiece.PieceType.Knight:
+                                        chessBoard.Grid[promotingPawn.BoardPos.X, promotingPawn.BoardPos.Y] = new Knight(new Point(promotingPawn.BoardPos.X, promotingPawn.BoardPos.Y), promotingPawn.Type, promotingPawn.IsBlack);
+                                        break;
+                                    case ChessPiece.PieceType.Bishop:
+                                        chessBoard.Grid[promotingPawn.BoardPos.X, promotingPawn.BoardPos.Y] = new Bishop(new Point(promotingPawn.BoardPos.X, promotingPawn.BoardPos.Y), promotingPawn.Type, promotingPawn.IsBlack);
+                                        break;
+
+                                }
+
+
                                 pawnPromotion = false;
                             }
 
@@ -240,6 +259,9 @@ namespace Chess
 
                         if (PossibleMoves.Contains(new Point(pos.X, pos.Y)))
                         {
+
+
+
                             chessBoard.Grid[SelectedPiece.BoardPos.X, SelectedPiece.BoardPos.Y] = null;
                             SelectedPiece.BoardPos = new Point(pos.X, pos.Y);
                             if (SelectedPiece.GetType() == typeof(Pawn) && SelectedPiece.BoardPos.Y == 0 && !SelectedPiece.IsBlack)
@@ -254,10 +276,6 @@ namespace Chess
                             }
 
                             chessBoard.Grid[pos.X, pos.Y] = SelectedPiece;
-
-                            PossibleMoves = SelectedPiece.Move(chessBoard.Grid);
-
-
 
 
                             for (int x = 0; x < chessBoard.Grid.GetLength(0); x++)
@@ -276,18 +294,15 @@ namespace Chess
                             {
                                 var pawn = (Pawn)chessBoard.Grid[pos.X, pos.Y];
                                 pawn.HasMoved = true;
-                                if (pawn.PotentiallyEnPassantable)
-                                {
-                                    if (pawn.IsBlack)
-                                    {
-                                        chessBoard.Grid[pos.X, pos.Y - 1] = null;
-                                    }
-                                    else
-                                    {
-                                        chessBoard.Grid[pos.X, pos.Y + 1] = null;
-                                    }
-                                }
+
                             }
+
+
+                            PossibleMoves = SelectedPiece.Move(chessBoard.Grid);
+
+
+
+
 
                             WhiteTurn = !WhiteTurn;
 
