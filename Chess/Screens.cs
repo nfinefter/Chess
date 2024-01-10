@@ -275,6 +275,7 @@ namespace Chess
                                 promotingPawn = (Pawn)SelectedPiece;
                             }
 
+
                             chessBoard.Grid[pos.X, pos.Y] = SelectedPiece;
 
 
@@ -282,7 +283,7 @@ namespace Chess
                             {
                                 for (int y = 0; y < chessBoard.Grid.GetLength(0); y++)
                                 {
-                                    if (chessBoard.Grid[x, y] != null && chessBoard.Grid[x, y].GetType() == typeof(Pawn) && chessBoard.Grid[x, y].IsBlack != WhiteTurn)
+                                    if (chessBoard.Grid[x, y] != null && chessBoard.Grid[x, y].GetType() == typeof(Pawn) && chessBoard.Grid[x, y].IsBlack == WhiteTurn)
                                     {
                                         var pawn = (Pawn)chessBoard.Grid[x, y];
                                         pawn.PotentiallyEnPassantable = false;
@@ -299,9 +300,7 @@ namespace Chess
 
 
                             PossibleMoves = SelectedPiece.Move(chessBoard.Grid);
-
-
-
+                          
 
 
                             WhiteTurn = !WhiteTurn;
@@ -367,6 +366,19 @@ namespace Chess
                                 }
 
 
+                            }
+                        }
+                        if (SelectedPiece != null && SelectedPiece.GetType() == typeof(Pawn))
+                        {
+                            Pawn temp = (Pawn)SelectedPiece;
+
+                            if (SelectedPiece.BoardPos.X - 1 > 0 && chessBoard.Grid[SelectedPiece.BoardPos.X - 1, SelectedPiece.BoardPos.Y] != null && chessBoard.Grid[SelectedPiece.BoardPos.X - 1, SelectedPiece.BoardPos.Y].GetType() == typeof(Pawn) && SelectedPiece.IsBlack != chessBoard.Grid[SelectedPiece.BoardPos.X - 1, SelectedPiece.BoardPos.Y].IsBlack)
+                            {
+                                temp.EnPassant(chessBoard.Grid, PossibleMoves, (Pawn)chessBoard.Grid[SelectedPiece.BoardPos.X - 1, SelectedPiece.BoardPos.Y]);
+                            }
+                            if (SelectedPiece.BoardPos.X + 1 < chessBoard.Grid.GetLength(0) && chessBoard.Grid[SelectedPiece.BoardPos.X + 1, SelectedPiece.BoardPos.Y] != null && chessBoard.Grid[SelectedPiece.BoardPos.X + 1, SelectedPiece.BoardPos.Y].GetType() == typeof(Pawn) && SelectedPiece.IsBlack != chessBoard.Grid[SelectedPiece.BoardPos.X + 1, SelectedPiece.BoardPos.Y].IsBlack)
+                            {
+                                temp.EnPassant(chessBoard.Grid, PossibleMoves, (Pawn)chessBoard.Grid[SelectedPiece.BoardPos.X + 1, SelectedPiece.BoardPos.Y]);
                             }
                         }
                     }
