@@ -72,7 +72,7 @@ namespace Chess
                     if (Grid[i, j] != null)
                     {
                         var moves = Grid[i, j].Move(Grid);
-                        if (moves.Contains(KingPos))
+                        if (moves.Contains(new Move(KingPos)))
                         {
                             return true;
                             //KingPos is 4, 7 but the Queen when it should be 5, 6 after being killed by the king basically it is missing after the simulation.
@@ -88,7 +88,7 @@ namespace Chess
             Point KingPos = FindKing(isWhite);
 
             
-            List<Point> moves = new List<Point>();
+            List<Move> moves = new List<Move>();
             for (int i = 0; i < 8; i++)
             {
                 for (int j = 0; j < 8; j++)
@@ -107,14 +107,14 @@ namespace Chess
 
             return true;
         }
-        public bool IsInCheckPostSimulation(List<Point> Moves, ChessPiece Piece)
+        public bool IsInCheckPostSimulation(List<Move> Moves, ChessPiece Piece)
         {
             bool checkMate = true;
             foreach (var move in Moves)
             {
-                ChessPiece savePiece = Grid[move.X, move.Y];
+                ChessPiece savePiece = Grid[move.Destination.X, move.Destination.Y];
 
-                Grid[move.X, move.Y] = Piece;
+                Grid[move.Destination.X, move.Destination.Y] = Piece;
                 Grid[Piece.BoardPos.X, Piece.BoardPos.Y] = null;
 
                 if (!IsInCheck(!Piece.IsBlack))
@@ -123,7 +123,7 @@ namespace Chess
                 }
 
                 Grid[Piece.BoardPos.X, Piece.BoardPos.Y] = Piece;
-                Grid[move.X, move.Y] = savePiece;
+                Grid[move.Destination.X, move.Destination.Y] = savePiece;
 
                 //var tempBoardPos = Piece.BoardPos;
                 //ChessPiece tempPiece = Grid[move.X, move.Y];

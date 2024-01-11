@@ -38,7 +38,7 @@ namespace Chess
         public Texture2D ChessBoardTex;
         public static Texture2D ChessPiecesTex;
         public ChessBoard chessBoard;
-        public List<Point> PossibleMoves;
+        public List<Move> PossibleMoves;
         bool drawCheck;
         MouseState prevState;
         bool inCheck = false;
@@ -185,7 +185,7 @@ namespace Chess
             {
                 for (int i = 0; i < PossibleMoves.Count; i++)
                 {
-                    spriteBatch.DrawRectangle(new Rectangle(50 + PossibleMoves[i].X * size, size * PossibleMoves[i].Y, 75, 75), Color.Lime, 1, 0);
+                    spriteBatch.DrawRectangle(new Rectangle(50 + PossibleMoves[i].Destination.X * size, size * PossibleMoves[i].Destination.Y, 75, 75), Color.Lime, 1, 0);
                 }
             }
             if (drawCheck)
@@ -219,7 +219,7 @@ namespace Chess
             {
                 Point pos = new Point((currState.Position.X - 50) / size, currState.Position.Y / size);
                 if (pos.X < 8 && pos.Y < 8)
-                {
+                 {
                     #region
 
                     if (pawnPromotion)
@@ -256,12 +256,8 @@ namespace Chess
 
                     if (PossibleMoves != null && SelectedPiece != null)
                     {
-
-                        if (PossibleMoves.Contains(new Point(pos.X, pos.Y)))
+                        if (PossibleMoves.Any(Pos => Pos.Destination == pos))
                         {
-
-
-
                             chessBoard.Grid[SelectedPiece.BoardPos.X, SelectedPiece.BoardPos.Y] = null;
                             SelectedPiece.BoardPos = new Point(pos.X, pos.Y);
                             if (SelectedPiece.GetType() == typeof(Pawn) && SelectedPiece.BoardPos.Y == 0 && !SelectedPiece.IsBlack)
@@ -275,8 +271,22 @@ namespace Chess
                                 promotingPawn = (Pawn)SelectedPiece;
                             }
 
-
                             chessBoard.Grid[pos.X, pos.Y] = SelectedPiece;
+
+                            Move currentMove = PossibleMoves.Where(Pos => Pos.Destination == pos).FirstOrDefault();
+
+
+                            if (currentMove.Property == Move.Type.EnPassant)
+                            {
+                                if (chessBoard.Grid[pos.X, pos.Y + 1] != null && chessBoard.Grid[pos.X, pos.Y + 1].GetType() == typeof(Pawn) && chessBoard.Grid[pos.X, pos.Y + 1].IsBlack)
+                                {
+                                    chessBoard.Grid[pos.X, pos.Y + 1] = null;
+                                }
+                                else if (chessBoard.Grid[pos.X, pos.Y - 1] != null && chessBoard.Grid[pos.X, pos.Y - 1].GetType() == typeof(Pawn) && !chessBoard.Grid[pos.X, pos.Y - 1].IsBlack)
+                                {
+                                    chessBoard.Grid[pos.X, pos.Y - 1] = null;
+                                }
+                            }
 
 
                             for (int x = 0; x < chessBoard.Grid.GetLength(0); x++)
@@ -326,7 +336,7 @@ namespace Chess
                             if (chessBoard.Grid[pos.X, pos.Y] != null && chessBoard.Grid[pos.X, pos.Y].IsBlack == !WhiteTurn)
                             {
                                 SelectedPiece = chessBoard.Grid[pos.X, pos.Y];
-                                PossibleMoves = new List<Point>();
+                                PossibleMoves = new List<Move>();
 
                                 if (SelectedPiece != null)
                                 {
@@ -335,11 +345,11 @@ namespace Chess
                                     for (int i = 0; i < potentialMoves.Count; i++)
                                     {
                                         var tempBoardPos = SelectedPiece.BoardPos;
-                                        ChessPiece tempPiece = chessBoard.Grid[potentialMoves[i].X, potentialMoves[i].Y];
-                                        Point tempGridPos = new Point(potentialMoves[i].X, potentialMoves[i].Y);
+                                        ChessPiece tempPiece = chessBoard.Grid[potentialMoves[i].Destination.X, potentialMoves[i].Destination.Y];
+                                        Point tempGridPos = new Point(potentialMoves[i].Destination.X, potentialMoves[i].Destination.Y);
 
-                                        SelectedPiece.BoardPos = new Point(potentialMoves[i].X, potentialMoves[i].Y);
-                                        chessBoard.Grid[potentialMoves[i].X, potentialMoves[i].Y] = SelectedPiece;
+                                        SelectedPiece.BoardPos = new Point(potentialMoves[i].Destination.X, potentialMoves[i].Destination.Y);
+                                        chessBoard.Grid[potentialMoves[i].Destination.X, potentialMoves[i].Destination.Y] = SelectedPiece;
 
                                         var tempPreviousPos = chessBoard.Grid[pos.X, pos.Y];
 

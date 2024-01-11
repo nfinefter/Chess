@@ -9,6 +9,24 @@ using System.Threading.Tasks;
 
 namespace Chess
 {
+    public struct Move
+    {
+        [Flags]
+        public enum Type
+        {
+            None = 0,
+            EnPassant = 1,
+            Castling = 2
+        }
+        public Point Destination;
+        public Type Property;
+
+        public Move(Point destination, Type property = Type.None)
+        {
+            Destination = destination;
+            Property = property;
+        }
+    }
     public abstract class ChessPiece
     {
         public enum PieceType
@@ -20,7 +38,7 @@ namespace Chess
             Knight,
             Pawn
         }
-        public List<Point> Moves = new List<Point>();
+        public List<Move> Moves = new List<Move>();
         public Point BoardPos;
         public bool IsBlack;
         public PieceType Type;
@@ -31,7 +49,7 @@ namespace Chess
             IsBlack = isBlack;
         }
 
-        public abstract List<Point> Move(ChessPiece[,] Grid);
+        public abstract List<Move> Move(ChessPiece[,] Grid);
 
     }
 }
