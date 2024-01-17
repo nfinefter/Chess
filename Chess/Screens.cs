@@ -287,6 +287,27 @@ namespace Chess
                                     chessBoard.Grid[pos.X, pos.Y - 1] = null;
                                 }
                             }
+                            if (currentMove.Property == Move.Type.Castling)
+                            {
+                                if (currentMove.Destination.X == 6)
+                                {
+
+                                    chessBoard.Grid[5, pos.Y] = chessBoard.Grid[7, pos.Y];
+                                    chessBoard.Grid[5, pos.Y].BoardPos = new Point(5, pos.Y);
+
+                                    chessBoard.Grid[7, pos.Y] = null;
+                            
+                                }
+                                else if (currentMove.Destination.X == 2)
+                                {
+
+                                    chessBoard.Grid[3, pos.Y] = chessBoard.Grid[0, pos.Y];
+                                    chessBoard.Grid[3, pos.Y].BoardPos = new Point(3, pos.Y);
+
+
+                                    chessBoard.Grid[0, pos.Y] = null;
+                                }
+                            }
 
 
                             for (int x = 0; x < chessBoard.Grid.GetLength(0); x++)
@@ -305,6 +326,18 @@ namespace Chess
                             {
                                 var pawn = (Pawn)chessBoard.Grid[pos.X, pos.Y];
                                 pawn.HasMoved = true;
+
+                            }
+                            if (chessBoard.Grid[pos.X, pos.Y].GetType() == typeof(King))
+                            {
+                                var king = (King)chessBoard.Grid[pos.X, pos.Y];
+                                king.HasMoved = true;
+
+                            }
+                            if (chessBoard.Grid[pos.X, pos.Y].GetType() == typeof(Rook))
+                            {
+                                var rook = (Rook)chessBoard.Grid[pos.X, pos.Y];
+                                rook.HasMoved = true;
 
                             }
 

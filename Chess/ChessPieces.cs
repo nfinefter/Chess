@@ -188,10 +188,69 @@ namespace Chess
         {
 
         }
+        private bool IsKingSideClear(ChessPiece[,] Grid)
+        {
+            if (HasMoved) return false;
+            if (Grid[BoardPos.X + 1, BoardPos.Y] == null && Grid[BoardPos.X + 2, BoardPos.Y] == null)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        private bool IsQueenSideClear(ChessPiece[,] Grid)
+        {
+            if (HasMoved) return false;
+            if (Grid[BoardPos.X - 1, BoardPos.Y] == null && Grid[BoardPos.X - 2, BoardPos.Y] == null && Grid[BoardPos.X - 3, BoardPos.Y] == null)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        private bool CanCastleKingSide(ChessPiece[,] Grid)
+        {
+            //Check for if rook moved
+            if (Grid[7, BoardPos.Y] != null && Grid[7, BoardPos.Y].GetType() == typeof(Rook))
+            {
+                Rook temp = new Rook(Grid[7, BoardPos.Y].BoardPos, PieceType.Rook, Grid[7, BoardPos.Y].IsBlack);
+                if (temp.HasMoved)
+                {
+                    return false;
+                }
+            }
+
+
+            return IsKingSideClear(Grid); 
+        }
+
+        private bool CanCastleQueenSide(ChessPiece[,] Grid)
+        {
+            //Check for if rook moved
+            if (Grid[0, BoardPos.Y] != null && Grid[0, BoardPos.Y].GetType() == typeof(Rook))
+            {
+                Rook temp = new Rook(Grid[0, BoardPos.Y].BoardPos, PieceType.Rook, Grid[0, BoardPos.Y].IsBlack);
+                if (temp.HasMoved)
+                {
+                    return false;
+                }
+            }
+            return IsQueenSideClear(Grid);
+        }
+
         public override List<Move> Move(ChessPiece[,] Grid)
         {
             List<Move> PossibleMoves = new List<Move>();
             PossibleMoves.Clear();
+
+            if (CanCastleKingSide(Grid))
+            {
+                PossibleMoves.Add(new Chess.Move(new Point(6, BoardPos.Y), Chess.Move.Type.Castling));
+            }
+            if (CanCastleQueenSide(Grid))
+            {
+                PossibleMoves.Add(new Chess.Move(new Point(2, BoardPos.Y), Chess.Move.Type.Castling));
+            }
 
             if (BoardPos.Y + 1 < Grid.GetLength(0) && BoardPos.X + 1 < Grid.GetLength(0))
             {
