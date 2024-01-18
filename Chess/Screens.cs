@@ -307,37 +307,51 @@ namespace Chess
 
                                     chessBoard.Grid[0, pos.Y] = null;
                                 }
+                                else if (currentMove.Destination.Y == 0)
+                                {
+
+                                    chessBoard.Grid[pos.X, 6] = chessBoard.Grid[pos.X, 0];
+                                    chessBoard.Grid[pos.X, 6].BoardPos = new Point(pos.X, 6);
+
+
+                                    chessBoard.Grid[pos.X, 0] = null;
+                                }
+                                else if (currentMove.Destination.Y == 7)
+                                {
+
+                                    chessBoard.Grid[pos.X, 1] = chessBoard.Grid[pos.X, 7];
+                                    chessBoard.Grid[pos.X, 1].BoardPos = new Point(pos.X, 1);
+
+
+                                    chessBoard.Grid[pos.X, 7] = null;
+                                }
                             }
 
 
                             for (int x = 0; x < chessBoard.Grid.GetLength(0); x++)
-                            {
+                            { 
                                 for (int y = 0; y < chessBoard.Grid.GetLength(0); y++)
                                 {
                                     if (chessBoard.Grid[x, y] != null && chessBoard.Grid[x, y].GetType() == typeof(Pawn) && chessBoard.Grid[x, y].IsBlack == WhiteTurn)
                                     {
-                                        var pawn = (Pawn)chessBoard.Grid[x, y];
-                                        pawn.PotentiallyEnPassantable = false;
+                                        ((Pawn)chessBoard.Grid[x, y]).PotentiallyEnPassantable = false;
                                     }
                                 }
                             }
 
                             if (chessBoard.Grid[pos.X, pos.Y].GetType() == typeof(Pawn))
                             {
-                                var pawn = (Pawn)chessBoard.Grid[pos.X, pos.Y];
-                                pawn.HasMoved = true;
+                                ((Pawn)chessBoard.Grid[pos.X, pos.Y]).HasMoved = true;
 
                             }
                             if (chessBoard.Grid[pos.X, pos.Y].GetType() == typeof(King))
                             {
-                                var king = (King)chessBoard.Grid[pos.X, pos.Y];
-                                king.HasMoved = true;
+                                ((King)chessBoard.Grid[pos.X, pos.Y]).HasMoved = true;
 
                             }
                             if (chessBoard.Grid[pos.X, pos.Y].GetType() == typeof(Rook))
                             {
-                                var rook = (Rook)chessBoard.Grid[pos.X, pos.Y];
-                                rook.HasMoved = true;
+                                ((Rook)chessBoard.Grid[pos.X, pos.Y]).HasMoved = true;
 
                             }
 

@@ -188,11 +188,37 @@ namespace Chess
         {
 
         }
+        public bool IsUnderAttack(ChessPiece[,] Grid, Point piece)
+        {
+            for (int i = 0; i < 8; i++)
+            {
+                for (int j = 0; j < 8; j++)
+                {
+                    if (Grid[i, j] != null)
+                    {
+                        if (i != BoardPos.X && j != BoardPos.Y)
+                        {
+                            var moves = Grid[i, j].Move(Grid);
+                            if (moves.Contains(new Move(piece)) && IsBlack != Grid[i, j].IsBlack)
+                            {
+                                return true;
+                            }
+                        }
+                    }
+                }
+
+            }
+            return false;
+        }
+
         private bool IsKingSideClear(ChessPiece[,] Grid)
         {
             if (HasMoved) return false;
             if (Grid[BoardPos.X + 1, BoardPos.Y] == null && Grid[BoardPos.X + 2, BoardPos.Y] == null)
             {
+                if (IsUnderAttack(Grid, new Point(BoardPos.X + 1, BoardPos.Y)))    return false;
+
+                if (IsUnderAttack(Grid, new Point(BoardPos.X + 2, BoardPos.Y))) return false;
                 return true;
             }
             return false;
@@ -203,7 +229,38 @@ namespace Chess
             if (HasMoved) return false;
             if (Grid[BoardPos.X - 1, BoardPos.Y] == null && Grid[BoardPos.X - 2, BoardPos.Y] == null && Grid[BoardPos.X - 3, BoardPos.Y] == null)
             {
+                if (IsUnderAttack(Grid, new Point(BoardPos.X - 1, BoardPos.Y))) return false;
+
+                if (IsUnderAttack(Grid, new Point(BoardPos.X - 2, BoardPos.Y))) return false;
                 return true;
+            }
+            return false;
+        }
+
+        private bool isVerticalSideClear(ChessPiece[,] Grid)
+        { 
+            if (HasMoved) return false;
+            if (IsBlack)
+            {
+                if (Grid[BoardPos.X, BoardPos.Y + 1] == null && Grid[BoardPos.X, BoardPos.Y + 2] == null && Grid[BoardPos.X, BoardPos.Y + 3] == null && Grid[BoardPos.X, BoardPos.Y + 4] == null && Grid[BoardPos.X, BoardPos.Y + 5] == null && Grid[BoardPos.X, BoardPos.Y + 6] == null)
+                {
+                    if (IsUnderAttack(Grid, new Point(BoardPos.X, BoardPos.Y + 1))) return false;
+
+                    if (IsUnderAttack(Grid, new Point(BoardPos.X, BoardPos.Y + 2))) return false;
+
+                    return true;
+                }
+            }
+            else
+            {
+                if (Grid[BoardPos.X, BoardPos.Y - 1] == null && Grid[BoardPos.X, BoardPos.Y - 2] == null && Grid[BoardPos.X, BoardPos.Y - 3] == null && Grid[BoardPos.X, BoardPos.Y - 4] == null && Grid[BoardPos.X, BoardPos.Y - 5] == null && Grid[BoardPos.X, BoardPos.Y - 6] == null)
+                {
+                    if (IsUnderAttack(Grid, new Point(BoardPos.X, BoardPos.Y - 1))) return false;
+
+                    if (IsUnderAttack(Grid, new Point(BoardPos.X, BoardPos.Y - 2))) return false;
+
+                    return true;
+                }   
             }
             return false;
         }
@@ -237,6 +294,34 @@ namespace Chess
             }
             return IsQueenSideClear(Grid);
         }
+        
+        private bool CanCastleVerticalSide(ChessPiece[,] Grid)
+        {
+            if (!IsBlack)
+            {
+                if (Grid[BoardPos.X, 0] != null && Grid[BoardPos.X, 0].GetType() == typeof(Rook))
+                {
+                    Rook temp = new Rook(Grid[BoardPos.X, 0].BoardPos, PieceType.Rook, Grid[BoardPos.X, 0].IsBlack);
+                    if (temp.HasMoved)
+                    {
+                        return false;
+                    }
+                }
+            }
+            else
+            {
+                if (Grid[BoardPos.X, 7] != null && Grid[BoardPos.X, 7].GetType() == typeof(Rook))
+                {
+                    Rook temp = new Rook(Grid[BoardPos.X, 7].BoardPos, PieceType.Rook, Grid[BoardPos.X, 7].IsBlack);
+                    if (temp.HasMoved)
+                    {
+                        return false;
+                    }
+                }
+           
+            }
+            return isVerticalSideClear(Grid);
+        }
 
         public override List<Move> Move(ChessPiece[,] Grid)
         {
@@ -250,6 +335,10 @@ namespace Chess
             if (CanCastleQueenSide(Grid))
             {
                 PossibleMoves.Add(new Chess.Move(new Point(2, BoardPos.Y), Chess.Move.Type.Castling));
+            }
+            if (CanCastleVerticalSide(Grid))
+            {                
+                PossibleMoves.Add(new Chess.Move(new Point(BoardPos.X, Convert.ToInt32(IsBlack) * 7), Chess.Move.Type.Castling));
             }
 
             if (BoardPos.Y + 1 < Grid.GetLength(0) && BoardPos.X + 1 < Grid.GetLength(0))
