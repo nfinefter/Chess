@@ -278,13 +278,16 @@ namespace Chess
 
                             if (currentMove.Property == Move.Type.EnPassant)
                             {
-                                if (chessBoard.Grid[pos.X, pos.Y + 1] != null && chessBoard.Grid[pos.X, pos.Y + 1].GetType() == typeof(Pawn) && chessBoard.Grid[pos.X, pos.Y + 1].IsBlack)
+                                if (chessBoard.Grid[pos.X, pos.Y].IsBlack != chessBoard.Grid[pos.X, pos.Y].IsBlack)
                                 {
-                                    chessBoard.Grid[pos.X, pos.Y + 1] = null;
-                                }
-                                else if (chessBoard.Grid[pos.X, pos.Y - 1] != null && chessBoard.Grid[pos.X, pos.Y - 1].GetType() == typeof(Pawn) && !chessBoard.Grid[pos.X, pos.Y - 1].IsBlack)
-                                {
-                                    chessBoard.Grid[pos.X, pos.Y - 1] = null;
+                                    if (chessBoard.Grid[pos.X, pos.Y + 1] != null && chessBoard.Grid[pos.X, pos.Y + 1].GetType() == typeof(Pawn) && chessBoard.Grid[pos.X, pos.Y + 1].IsBlack)
+                                    {
+                                        chessBoard.Grid[pos.X, pos.Y + 1] = null;
+                                    }
+                                    else if (chessBoard.Grid[pos.X, pos.Y - 1] != null && chessBoard.Grid[pos.X, pos.Y - 1].GetType() == typeof(Pawn) && !chessBoard.Grid[pos.X, pos.Y - 1].IsBlack)
+                                    {
+                                        chessBoard.Grid[pos.X, pos.Y - 1] = null;
+                                    }
                                 }
                             }
                             if (currentMove.Property == Move.Type.Castling)
@@ -307,16 +310,7 @@ namespace Chess
 
                                     chessBoard.Grid[0, pos.Y] = null;
                                 }
-                                else if (currentMove.Destination.Y == 0)
-                                {
-
-                                    chessBoard.Grid[pos.X, 6] = chessBoard.Grid[pos.X, 0];
-                                    chessBoard.Grid[pos.X, 6].BoardPos = new Point(pos.X, 6);
-
-
-                                    chessBoard.Grid[pos.X, 0] = null;
-                                }
-                                else if (currentMove.Destination.Y == 7)
+                                else if (currentMove.Destination.Y == 2)
                                 {
 
                                     chessBoard.Grid[pos.X, 1] = chessBoard.Grid[pos.X, 7];
@@ -324,6 +318,15 @@ namespace Chess
 
 
                                     chessBoard.Grid[pos.X, 7] = null;
+                                }
+                                else if (currentMove.Destination.Y == 5)
+                                {
+
+                                    chessBoard.Grid[pos.X, 6] = chessBoard.Grid[pos.X, 0];
+                                    chessBoard.Grid[pos.X, 6].BoardPos = new Point(pos.X, 6);
+
+
+                                    chessBoard.Grid[pos.X, 0] = null;
                                 }
                             }
 

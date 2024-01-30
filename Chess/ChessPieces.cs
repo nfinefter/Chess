@@ -337,8 +337,16 @@ namespace Chess
                 PossibleMoves.Add(new Chess.Move(new Point(2, BoardPos.Y), Chess.Move.Type.Castling));
             }
             if (CanCastleVerticalSide(Grid))
-            {                
-                PossibleMoves.Add(new Chess.Move(new Point(BoardPos.X, Convert.ToInt32(IsBlack) * 7), Chess.Move.Type.Castling));
+            {   
+                if (IsBlack)
+                {
+                    PossibleMoves.Add(new Chess.Move(new Point(BoardPos.X, 2), Chess.Move.Type.Castling));
+                }
+                else
+                {
+                    PossibleMoves.Add(new Chess.Move(new Point(BoardPos.X, 5), Chess.Move.Type.Castling));
+                }
+                
             }
 
             if (BoardPos.Y + 1 < Grid.GetLength(0) && BoardPos.X + 1 < Grid.GetLength(0))
