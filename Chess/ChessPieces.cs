@@ -678,7 +678,7 @@ namespace Chess
                     PotentiallyEnPassantable = true;
                 }
             }
-
+            s
             if (BoardPos.Y + 1 < Grid.GetLength(0) && Grid[BoardPos.X, BoardPos.Y + 1] == null && IsBlack)
             {
                 PossibleMoves.Add(new Chess.Move(new Point(BoardPos.X, BoardPos.Y + 1)));
