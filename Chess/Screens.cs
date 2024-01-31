@@ -278,17 +278,16 @@ namespace Chess
 
                             if (currentMove.Property == Move.Type.EnPassant)
                             {
-                                if (chessBoard.Grid[pos.X, pos.Y].IsBlack != chessBoard.Grid[pos.X, pos.Y].IsBlack)
-                                {
-                                    if (chessBoard.Grid[pos.X, pos.Y + 1] != null && chessBoard.Grid[pos.X, pos.Y + 1].GetType() == typeof(Pawn) && chessBoard.Grid[pos.X, pos.Y + 1].IsBlack)
+               
+                                    if (chessBoard.Grid[pos.X, pos.Y + 1] != null && chessBoard.Grid[pos.X, pos.Y + 1].GetType() == typeof(Pawn) && !chessBoard.Grid[pos.X, pos.Y + 1].IsBlack == SelectedPiece.IsBlack)
                                     {
                                         chessBoard.Grid[pos.X, pos.Y + 1] = null;
                                     }
-                                    else if (chessBoard.Grid[pos.X, pos.Y - 1] != null && chessBoard.Grid[pos.X, pos.Y - 1].GetType() == typeof(Pawn) && !chessBoard.Grid[pos.X, pos.Y - 1].IsBlack)
+                                    else if (chessBoard.Grid[pos.X, pos.Y - 1] != null && chessBoard.Grid[pos.X, pos.Y - 1].GetType() == typeof(Pawn) && !chessBoard.Grid[pos.X, pos.Y - 1].IsBlack == SelectedPiece.IsBlack)
                                     {
                                         chessBoard.Grid[pos.X, pos.Y - 1] = null;
                                     }
-                                }
+                                
                             }
                             if (currentMove.Property == Move.Type.Castling)
                             {
@@ -432,7 +431,7 @@ namespace Chess
                         {
                             Pawn temp = (Pawn)SelectedPiece;
 
-                            if (SelectedPiece.BoardPos.X - 1 > 0 && chessBoard.Grid[SelectedPiece.BoardPos.X - 1, SelectedPiece.BoardPos.Y] != null && chessBoard.Grid[SelectedPiece.BoardPos.X - 1, SelectedPiece.BoardPos.Y].GetType() == typeof(Pawn) && SelectedPiece.IsBlack != chessBoard.Grid[SelectedPiece.BoardPos.X - 1, SelectedPiece.BoardPos.Y].IsBlack)
+                            if (SelectedPiece.BoardPos.X - 1 >= 0 && chessBoard.Grid[SelectedPiece.BoardPos.X - 1, SelectedPiece.BoardPos.Y] != null && chessBoard.Grid[SelectedPiece.BoardPos.X - 1, SelectedPiece.BoardPos.Y].GetType() == typeof(Pawn) && SelectedPiece.IsBlack != chessBoard.Grid[SelectedPiece.BoardPos.X - 1, SelectedPiece.BoardPos.Y].IsBlack)
                             {
                                 temp.EnPassant(chessBoard.Grid, PossibleMoves, (Pawn)chessBoard.Grid[SelectedPiece.BoardPos.X - 1, SelectedPiece.BoardPos.Y]);
                             }

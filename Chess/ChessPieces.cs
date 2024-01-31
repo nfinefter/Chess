@@ -669,12 +669,12 @@ namespace Chess
             { 
                 if (BoardPos.Y + 2 < Grid.GetLength(0) && Grid[BoardPos.X, BoardPos.Y + 1] == null && Grid[BoardPos.X, BoardPos.Y + 2] == null && IsBlack)
                 {
-                    PossibleMoves.Add(new Chess.Move(new Point(BoardPos.X, BoardPos.Y + 2), Chess.Move.Type.EnPassant));
+                    PossibleMoves.Add(new Chess.Move(new Point(BoardPos.X, BoardPos.Y + 2)));
                     PotentiallyEnPassantable = true;
                 }
                 if (BoardPos.Y - 2 >= 0 && Grid[BoardPos.X, BoardPos.Y - 1] == null && Grid[BoardPos.X, BoardPos.Y - 2] == null && !IsBlack)
                 {
-                    PossibleMoves.Add(new Chess.Move(new Point(BoardPos.X, BoardPos.Y - 2), Chess.Move.Type.EnPassant));
+                    PossibleMoves.Add(new Chess.Move(new Point(BoardPos.X, BoardPos.Y - 2)));
                     PotentiallyEnPassantable = true;
                 }
             }
@@ -736,19 +736,19 @@ namespace Chess
 
             if (pawn.PotentiallyEnPassantable)
             {
-                if (BoardPos.X - 1 >= 0 && BoardPos.Y - 1 >= 0 && Grid[BoardPos.X - 1, BoardPos.Y] != null && !IsBlack && Grid[BoardPos.X - 1, BoardPos.Y].IsBlack != IsBlack && Grid[BoardPos.X - 1, BoardPos.Y].GetType() == typeof(Pawn))
+                if (BoardPos.X - 1 >= 0 && BoardPos.Y - 1 >= 0 && Grid[BoardPos.X - 1, BoardPos.Y] != null && !IsBlack && Grid[BoardPos.X - 1, BoardPos.Y].IsBlack != IsBlack && Grid[BoardPos.X - 1, BoardPos.Y].GetType() == typeof(Pawn) && ((Pawn)Grid[BoardPos.X - 1, BoardPos.Y]).PotentiallyEnPassantable)
                 {
                     PossibleMoves.Add(new Chess.Move(new Point(BoardPos.X - 1, BoardPos.Y - 1), Chess.Move.Type.EnPassant));
                 }
-                if (BoardPos.X + 1 < Grid.GetLength(0) && BoardPos.Y - 1 >= 0 && Grid[BoardPos.X + 1, BoardPos.Y] != null && !IsBlack && Grid[BoardPos.X + 1, BoardPos.Y].IsBlack != IsBlack && Grid[BoardPos.X + 1, BoardPos.Y].GetType() == typeof(Pawn))
+                if (BoardPos.X + 1 < Grid.GetLength(0) && BoardPos.Y - 1 >= 0 && Grid[BoardPos.X + 1, BoardPos.Y] != null && !IsBlack && Grid[BoardPos.X + 1, BoardPos.Y].IsBlack != IsBlack && Grid[BoardPos.X + 1, BoardPos.Y].GetType() == typeof(Pawn) && ((Pawn)Grid[BoardPos.X + 1, BoardPos.Y]).PotentiallyEnPassantable)
                 {
                     PossibleMoves.Add(new Chess.Move(new Point(BoardPos.X + 1, BoardPos.Y - 1), Chess.Move.Type.EnPassant));
                 }
-                if (BoardPos.X - 1 >= 0 && BoardPos.Y + 1 < Grid.GetLength(0) && Grid[BoardPos.X - 1, BoardPos.Y] != null && IsBlack && Grid[BoardPos.X - 1, BoardPos.Y].IsBlack != IsBlack && Grid[BoardPos.X - 1, BoardPos.Y].GetType() == typeof(Pawn))
+                if (BoardPos.X - 1 >= 0 && BoardPos.Y + 1 < Grid.GetLength(0) && Grid[BoardPos.X - 1, BoardPos.Y] != null && IsBlack && Grid[BoardPos.X - 1, BoardPos.Y].IsBlack != IsBlack && Grid[BoardPos.X - 1, BoardPos.Y].GetType() == typeof(Pawn) && ((Pawn)Grid[BoardPos.X - 1, BoardPos.Y]).PotentiallyEnPassantable)
                 {
                     PossibleMoves.Add(new Chess.Move(new Point(BoardPos.X - 1, BoardPos.Y + 1), Chess.Move.Type.EnPassant));
                 }
-                if (BoardPos.X + 1 < Grid.GetLength(0) && BoardPos.Y + 1 < Grid.GetLength(0) && Grid[BoardPos.X + 1, BoardPos.Y] != null && IsBlack && Grid[BoardPos.X + 1, BoardPos.Y].IsBlack != IsBlack && Grid[BoardPos.X + 1, BoardPos.Y].GetType() == typeof(Pawn))
+                if (BoardPos.X + 1 < Grid.GetLength(0) && BoardPos.Y + 1 < Grid.GetLength(0) && Grid[BoardPos.X + 1, BoardPos.Y] != null && IsBlack && Grid[BoardPos.X + 1, BoardPos.Y].IsBlack != IsBlack && Grid[BoardPos.X + 1, BoardPos.Y].GetType() == typeof(Pawn) && ((Pawn)Grid[BoardPos.X + 1, BoardPos.Y]).PotentiallyEnPassantable)
                 {
                     PossibleMoves.Add(new Chess.Move(new Point(BoardPos.X + 1, BoardPos.Y + 1), Chess.Move.Type.EnPassant));
                 }
